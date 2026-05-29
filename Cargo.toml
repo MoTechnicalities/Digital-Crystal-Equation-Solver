@@ -1,0 +1,21 @@
+[workspace]
+members = [
+    "apps/api",
+    "crates/digitalcrystal-engine",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"
+version = "0.1.0"
+authors = ["Mogir Jason Rofick"]
+
+[workspace.dependencies]
+axum = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net"] }
+toml = "0.8"
+tower = { version = "0.5", features = ["util"] }

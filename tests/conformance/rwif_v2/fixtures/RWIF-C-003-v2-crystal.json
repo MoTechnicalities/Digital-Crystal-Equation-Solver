@@ -1,0 +1,66 @@
+{
+  "crystal_id": "crystal-3",
+  "crystal_label": "Valid V2 Crystal",
+  "domain": "science",
+  "lobe": "symbolic",
+  "frozen": false,
+  "rwif_schema_version": "RWIF_V2",
+  "nodes": [
+    {
+      "node_id": "n1",
+      "label": "sample",
+      "aliases": ["specimen"],
+      "lobe": "symbolic",
+      "provenance": {"source": "fixture"}
+    },
+    {
+      "node_id": "n2",
+      "label": "measurement",
+      "aliases": [],
+      "lobe": "symbolic",
+      "provenance": {"source": "fixture"}
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge-3",
+      "source_node": "n1",
+      "relation": "supports",
+      "target_node": "n2",
+      "lobe": "symbolic",
+      "reinforcing": true,
+      "base_phase": 0.125,
+      "confidence_band": 0.02,
+      "phase_trajectory": [
+        {
+          "timestamp": "2026-05-28T12:00:00Z",
+          "phase": 0.125,
+          "confidence_band": 0.02,
+          "drift_delta": 0.001,
+          "event_type": "measurement",
+          "source": {"type": "fixture"},
+          "schema_version": "RWIF_EVENT_V2",
+          "amplitude_signed": 4,
+          "intent_signed": 1,
+          "phase_theta": 0.125,
+          "phase_omega": 0.001,
+          "state_encoding": "signed_i8_plus_intent_v2",
+          "quantization_step": 1,
+          "monotonic_index": 1
+        }
+      ],
+      "provenance": {"source": "fixture"},
+      "schema_version": "RWIF_EDGE_V2",
+      "state_encoding": "phase_scalar_v1",
+      "numeric_range": {
+        "amplitude": {"min": -127, "max": 127},
+        "intent": {"min": -127, "max": 127}
+      },
+      "wrap_mode": "principal_pi",
+      "integer_wrap_mode": "clamp",
+      "integration_rule": "legacy_scalar"
+    }
+  ],
+  "version_history": [],
+  "stability_score": 0.99
+}

@@ -1,0 +1,16 @@
+[solver]
+engine_mode = "signed_i8_plus_intent_v2"
+wrap_mode = "principal_pi"
+integer_wrap_mode = "clamp"
+integration_rule = "deterministic_geometric_v1"
+quantization_step = 1
+
+[runtime]
+bind_address = "0.0.0.0:8080"
+emit_route_audit = true
+deterministic_replay = true
+
+[rwif]
+schema_version = "RWIF_V2"
+edge_schema_version = "RWIF_EDGE_V2"
+event_schema_version = "RWIF_EVENT_V2"

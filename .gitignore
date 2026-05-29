@@ -1,0 +1,8 @@
+/target
+Cargo.lock
+.DS_Store
+.env
+.idea
+.vscode/settings.json
+*.log
+data/rwif/*.tmp

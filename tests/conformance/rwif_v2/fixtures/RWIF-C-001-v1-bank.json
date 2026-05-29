@@ -1,0 +1,55 @@
+{
+  "bank_id": "bank-1",
+  "bank_label": "Legacy Fixture",
+  "lobe": "symbolic",
+  "crystals": [
+    {
+      "crystal_id": "crystal-1",
+      "crystal_label": "Legacy Crystal",
+      "domain": "science",
+      "lobe": "symbolic",
+      "frozen": false,
+      "nodes": [
+        {
+          "node_id": "n1",
+          "label": "hydrogen",
+          "aliases": [],
+          "lobe": "symbolic",
+          "provenance": {"source": "fixture"}
+        },
+        {
+          "node_id": "n2",
+          "label": "atom",
+          "aliases": [],
+          "lobe": "symbolic",
+          "provenance": {"source": "fixture"}
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "edge-1",
+          "source_node": "n1",
+          "relation": "is_a",
+          "target_node": "n2",
+          "lobe": "symbolic",
+          "reinforcing": true,
+          "base_phase": 0.5236,
+          "confidence_band": 0.04,
+          "phase_trajectory": [
+            {
+              "timestamp": "2026-05-27T12:00:00Z",
+              "phase": 0.5236,
+              "confidence_band": 0.04,
+              "drift_delta": 0.0036,
+              "event_type": "crystallization",
+              "source": {"type": "consensus_gate"}
+            }
+          ],
+          "provenance": {"source": "fixture"}
+        }
+      ],
+      "version_history": [],
+      "stability_score": 1.0
+    }
+  ]
+}

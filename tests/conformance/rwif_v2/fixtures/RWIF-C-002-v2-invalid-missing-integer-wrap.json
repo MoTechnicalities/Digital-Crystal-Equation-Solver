@@ -1,0 +1,54 @@
+{
+  "bank_id": "bank-2",
+  "bank_label": "Invalid Fixture",
+  "lobe": "symbolic",
+  "rwif_schema_version": "RWIF_V2",
+  "crystals": [
+    {
+      "crystal_id": "crystal-2",
+      "crystal_label": "Invalid Crystal",
+      "domain": "science",
+      "lobe": "symbolic",
+      "frozen": false,
+      "rwif_schema_version": "RWIF_V2",
+      "nodes": [],
+      "edges": [
+        {
+          "edge_id": "edge-2",
+          "source_node": "n1",
+          "relation": "supports",
+          "target_node": "n2",
+          "lobe": "symbolic",
+          "reinforcing": true,
+          "base_phase": 0.0,
+          "confidence_band": 0.1,
+          "phase_trajectory": [
+            {
+              "timestamp": "2026-05-27T12:00:00Z",
+              "phase": 0.0,
+              "confidence_band": 0.1,
+              "drift_delta": 0.0,
+              "event_type": "observation",
+              "source": {"type": "fixture"},
+              "schema_version": "RWIF_EVENT_V2",
+              "state_encoding": "signed_i8_plus_intent_v2",
+              "quantization_step": 1,
+              "monotonic_index": 1
+            }
+          ],
+          "provenance": {"source": "fixture"},
+          "schema_version": "RWIF_EDGE_V2",
+          "state_encoding": "phase_scalar_v1",
+          "numeric_range": {
+            "amplitude": {"min": -127, "max": 127},
+            "intent": {"min": -127, "max": 127}
+          },
+          "wrap_mode": "principal_pi",
+          "integration_rule": "legacy_scalar"
+        }
+      ],
+      "version_history": [],
+      "stability_score": 1.0
+    }
+  ]
+}
