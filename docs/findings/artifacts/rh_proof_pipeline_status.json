@@ -63,7 +63,12 @@
       ],
       "status": "open",
       "missing_paths": [
-        "docs/findings/RH_COMPLETE_PROOF.md::open_status_markers_present"
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-01",
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-02",
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-03",
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-04",
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-05",
+        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-06"
       ]
     }
   ],
@@ -91,9 +96,24 @@
         "Current assessment:\n- Prize-ready.",
         "Current assessment:\n- Completed proof."
       ],
+      "c6_checklist_required_ids": [
+        "C6-SUB-01",
+        "C6-SUB-02",
+        "C6-SUB-03",
+        "C6-SUB-04",
+        "C6-SUB-05",
+        "C6-SUB-06"
+      ],
+      "c6_checklist_states": {
+        "C6-SUB-01": false,
+        "C6-SUB-02": false,
+        "C6-SUB-03": false,
+        "C6-SUB-04": false,
+        "C6-SUB-05": false,
+        "C6-SUB-06": false
+      },
       "repro_commands_present": true,
-      "review_checklist_present": true,
-      "no_open_status_markers": false
+      "review_checklist_present": true
     }
   },
   "next_actions": [

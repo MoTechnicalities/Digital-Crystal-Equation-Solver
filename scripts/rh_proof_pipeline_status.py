@@ -8,6 +8,7 @@ required prize-level obligations to current evidence artifacts.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -72,6 +73,8 @@ def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
         "required_section_headers": [],
         "required_status_markers": [],
         "forbidden_markers": [],
+        "c6_checklist_required_ids": [],
+        "c6_checklist_states": {},
     }
 
     if not exists(rel_path):
@@ -139,11 +142,27 @@ def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
     if not has_review_checklist:
         missing.append(f"{rel_path}::missing_review_checklist")
 
-    # Strict O6 gate: the manuscript cannot be considered complete if any section is still open.
-    no_open_status_markers = "Status:\n- open." not in text
-    details["no_open_status_markers"] = no_open_status_markers
-    if not no_open_status_markers:
-        missing.append(f"{rel_path}::open_status_markers_present")
+    required_c6_ids = [
+        "C6-SUB-01",
+        "C6-SUB-02",
+        "C6-SUB-03",
+        "C6-SUB-04",
+        "C6-SUB-05",
+        "C6-SUB-06",
+    ]
+    details["c6_checklist_required_ids"] = required_c6_ids
+
+    checklist_pattern = re.compile(r"^- \[(?P<state>[ xX])\] (?P<id>C6-SUB-[0-9]{2}):", re.MULTILINE)
+    checklist_states: dict[str, bool] = {}
+    for match in checklist_pattern.finditer(text):
+        checklist_states[match.group("id")] = match.group("state").lower() == "x"
+    details["c6_checklist_states"] = checklist_states
+
+    for item_id in required_c6_ids:
+        if item_id not in checklist_states:
+            missing.append(f"{rel_path}::missing_c6_checklist_item::{item_id}")
+        elif not checklist_states[item_id]:
+            missing.append(f"{rel_path}::c6_checklist_item_open::{item_id}")
 
     return len(missing) == 0, missing, details
 

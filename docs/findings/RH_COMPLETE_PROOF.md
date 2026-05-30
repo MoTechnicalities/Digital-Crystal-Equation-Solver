@@ -129,6 +129,17 @@ Minimum completion criteria:
 Status:
 - open.
 
+#### C6 Closure Checklist (Machine-Checked)
+
+Mark each item `[x]` only when evidence is committed and reviewable.
+
+- [ ] C6-SUB-01: Final theorem/disproof statement is written in full formal form, including domain and quantifiers.
+- [ ] C6-SUB-02: Dependency-closed proof chain is present with no unresolved lemma references.
+- [ ] C6-SUB-03: Assumption ledger is complete and every assumption is traced to a specific proof step.
+- [ ] C6-SUB-04: Edge-case and exception-set treatment is explicit and complete.
+- [ ] C6-SUB-05: Independent review packet is linked with replication instructions and expected outcomes.
+- [ ] C6-SUB-06: Contradiction audit is finalized, with no unresolved rejected dependencies.
+
 ## 4. Prize Readiness Assessment (Current)
 
 Current assessment:
