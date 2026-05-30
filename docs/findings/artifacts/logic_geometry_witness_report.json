@@ -1,5 +1,10 @@
 {
   "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "signature_source": "explicit_api_fields",
+  "required_signature_fields": [
+    "path_signature",
+    "endpoint_signature"
+  ],
   "run_repeats": 5,
   "case_count": 8,
   "row_count": 40,
@@ -10,7 +15,8 @@
       "assoc_add_pair_b",
       "assoc_mul_pair_c",
       "distrib_pair_d"
-    ]
+    ],
+    "signature_fields_present_all": true
   },
   "stability": {
     "A1": {
@@ -76,15 +82,15 @@
         "case_id": "A1",
         "expression": "2 + 2 * 3",
         "result": 8.0,
-        "psi_sig": "a44e1cb1f9a7aa66253df0e3ae85d9c713e4524e86e69670892222340d4f2e19",
-        "ei_sig": "af9abf31a671d7ac9e77f635ec88a786cd8e13a2ed4a6ca1e2b4674ef09c7bf2"
+        "psi_sig": "629cd025d1608d03a71d94cc25a8b1242903b1bc6cd578da12978270180f40b1",
+        "ei_sig": "b28924ec63d922acbc7caec49912b3a7617a7be812a0d2799d7b4de8ae851e4e"
       },
       "right": {
         "case_id": "A2",
         "expression": "(2 + 2) * 3",
         "result": 12.0,
-        "psi_sig": "540b052dae9342acaa448cf40c10e5cfe44e8adcad02fb25e0b8a49cc8aa201a",
-        "ei_sig": "f69ea8aba244290070a6b3c9ebccc899f3e3f75316fe7d84a3e2e0ac7b49f98a"
+        "psi_sig": "2f3d26cc7b55a66cbf3641d2c7845a155035807b470aabf0d55c7256a352fa8e",
+        "ei_sig": "58ffbb3abb2ce7c2d71e8428651c4fc3730232c36448f34be91e328259a9e82f"
       },
       "psi_diff": true,
       "ei_diff": true,
@@ -95,15 +101,15 @@
         "case_id": "B1",
         "expression": "(2 + 3) + 4",
         "result": 9.0,
-        "psi_sig": "7312fcf176fa44902efe464d51e23b3a74b40ea865af15f82b2a64e30f662002",
-        "ei_sig": "09ff3b873baf6ce249c363a9fa58e5411673d44e88614d9e4a68621304199c25"
+        "psi_sig": "6eba6eca6ae3dd1a9e96aa1e5a40dd79f9c26f25b2bc7378b18b934fbfd20130",
+        "ei_sig": "148325779eae04565197790b0c0cfabad7bfb9f77a28c13cefad09aa19429f4c"
       },
       "right": {
         "case_id": "B2",
         "expression": "2 + (3 + 4)",
         "result": 9.0,
-        "psi_sig": "bb0c8d2f19a462779b842b57c53eba5fe355cff7c193fa57ffd0ecf7f7dc9ec8",
-        "ei_sig": "c175ce8d2323c0668da2c2f0c12e975882d65426247ebb38ce1ede13bb61b741"
+        "psi_sig": "ee27c6d502b30288033b0f066722339684e901f5797068502fc69e38656c0acf",
+        "ei_sig": "4eb8fdc4976879814cf5734997238088dde7e161d295908e43542c05ed38c476"
       },
       "psi_diff": true,
       "ei_diff": true,
@@ -114,15 +120,15 @@
         "case_id": "C1",
         "expression": "(2 * 3) * 4",
         "result": 24.0,
-        "psi_sig": "56254f920dd4cf7858839221084713793af45f2eb89a6355365fa8e34a456cce",
-        "ei_sig": "93cb8c5ec4cdaee885ce91d2fa7df1eff21366ceb2983a127a2f76805cce7dbe"
+        "psi_sig": "6b330ea4d732bbc72d151828e889aec7509370041c5cafe04dbd18f6c6d35208",
+        "ei_sig": "284f0213848ff64b9fa0c43fd77e6fc14292b6859b0f66ca73c0112c554c60b1"
       },
       "right": {
         "case_id": "C2",
         "expression": "2 * (3 * 4)",
         "result": 24.0,
-        "psi_sig": "070861ec47b67d8e1a2bf9b410f04fa89e6d73c7b45347fad5e81431a8c9f380",
-        "ei_sig": "dfe9ab48c630ec418af4a9ea49c20e50376b04d3e971844bfbbbe2b5a7eee4a6"
+        "psi_sig": "941e0d4616b1dc13b9397234499ae9f190a55624c5fb3ffe02220ff615ee2d27",
+        "ei_sig": "0189c7798b952e08e552d774fcce55e046d3b289869237b15670c1ab54c56aa6"
       },
       "psi_diff": true,
       "ei_diff": true,
@@ -133,21 +139,21 @@
         "case_id": "D1",
         "expression": "(1 + 2) * 3",
         "result": 9.0,
-        "psi_sig": "75cab894d0e41fe51a82da6c6f7f4eb0e3d7f102c67ec2ee99aa713a63930fd7",
-        "ei_sig": "8afcd3df4a8f0c9a919b070cb659b269308b9ddfe54f96380a829006f0ba8cfd"
+        "psi_sig": "c20d55167a3f13bb123e569c18cb13533e3d6a286470ab44ccb84f258f506371",
+        "ei_sig": "ef4f799d7244f8e26a0235b9a5b98ee5458b298c3bb7971d65223c978681fffd"
       },
       "right": {
         "case_id": "D2",
         "expression": "(1 * 3) + (2 * 3)",
         "result": 9.0,
-        "psi_sig": "5cad8e8f1e0e3c853e26dab8a49cf81d1ed1c3229f7e8acbfe3ca17ae317ee1c",
-        "ei_sig": "b7b9db5dc4e9781e6405be6d0d2592d7ce8ac67cbe6565a2cbda259820558497"
+        "psi_sig": "9bcc2bd3089ecf48402cd774d81b990735b68d1b9de18bf3485bd4c965744496",
+        "ei_sig": "5182f6e1ffdf8650561c945427549ad7fa94c111621829a03d170db767a338a0"
       },
       "psi_diff": true,
       "ei_diff": true,
       "value_equal": true
     }
   },
-  "psi_encoder_note": "Provisional PSI hash over derivation_trace rule/op/base_phase/expression.",
-  "ei_encoder_note": "Provisional EI hash over result + final/cumulative theta + crystal_state."
+  "psi_encoder_note": "Uses payload.path_signature directly from API response.",
+  "ei_encoder_note": "Uses payload.endpoint_signature directly from API response."
 }

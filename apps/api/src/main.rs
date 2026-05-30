@@ -1231,6 +1231,8 @@ fn render_riemann_hypothesis_lab() -> String {
         h2 { margin: 0 0 10px; font-size: 1.1rem; }
         .problem { margin-top: 14px; border: 1px solid rgba(11,111,95,0.2); border-radius: 16px; padding: 14px 16px; background: rgba(11,111,95,0.06); }
         .problem p { margin: 8px 0; color: #2f4a53; line-height: 1.56; }
+        .prize { margin-top: 12px; border: 1px solid rgba(29,39,45,0.16); border-radius: 16px; padding: 14px 16px; background: rgba(255,255,255,0.74); }
+        .prize p { margin: 8px 0; color: #2f4a53; line-height: 1.56; }
         ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
         li { margin-bottom: 6px; }
         .mono { font-family: var(--mono); font-size: 0.93rem; color: #31434d; }
@@ -1263,6 +1265,11 @@ fn render_riemann_hypothesis_lab() -> String {
                 <p><strong>Riemann Hypothesis statement:</strong> every non-trivial zero of the Riemann zeta function has real part <span class=\"mono\">Re(s) = 1/2</span>.</p>
                 <p><strong>Why it matters:</strong> this condition constrains deep behavior in prime distribution and links analysis, number theory, and spectral structure.</p>
                 <p><strong>Our method here:</strong> deterministic trace experiments, explicit witness catalogs, and theorem-check workflows grounded in geometric logic.</p>
+            </section>
+            <section class=\"prize\">
+                <p><strong>Prize offering:</strong> the Riemann Hypothesis is one of the Clay Mathematics Institute Millennium Prize Problems, carrying a <span class=\"mono\">$1,000,000</span> award for a valid resolution.</p>
+                <p><strong>What the winner must prove:</strong> either a correct proof that all non-trivial zeta zeros satisfy <span class=\"mono\">Re(s) = 1/2</span>, or a correct disproof by producing and rigorously validating a single non-trivial zero with <span class=\"mono\">Re(s) != 1/2</span>.</p>
+                <p><strong>Acceptance standard:</strong> the argument must survive full peer review and broad mathematical verification under the Clay prize rules.</p>
             </section>
             <div class=\"actions\">
                 <a class=\"button\" href=\"/\">Back to Landing Page</a>
@@ -1391,6 +1398,12 @@ fn render_research_findings_lab() -> String {
                 <div class=\"path\">docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md</div>
                 <div class=\"path\">docs/findings/artifacts/hafnian_flux_asymmetry_sweep_summary.json</div>
             </article>
+            <article class=\"card\" id=\"rh-proof-program\">
+                <h2>RH Proof Program Status</h2>
+                <p>Tracks objective proof obligations and whether the current pipeline is prize-ready, based on concrete repository artifacts.</p>
+                <div class=\"path\">docs/findings/RH_PROOF_PROGRAM_V0_1.md</div>
+                <div class=\"path\">docs/findings/artifacts/rh_proof_pipeline_status.json</div>
+            </article>
         </section>
     </main>
 </body>
@@ -1399,6 +1412,8 @@ fn render_research_findings_lab() -> String {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashSet;
+
     use super::{ApiState, build_router};
     use axum::{
         body::{Body, to_bytes},
@@ -1407,6 +1422,35 @@ mod tests {
     use digitalcrystal_engine::{AppConfig, RWIF_EVENT_SCHEMA_VERSION, RWIF_SCHEMA_VERSION};
     use serde_json::{Value, json};
     use tower::util::ServiceExt;
+
+    async fn eval_math_payload(expression: &str) -> Value {
+        let app = build_router(ApiState {
+            config: std::sync::Arc::new(AppConfig::default()),
+        });
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/v1/csif/math")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        serde_json::to_vec(&json!({
+                            "expression": expression,
+                        }))
+                        .expect("request should serialize"),
+                    ))
+                    .expect("request should build"),
+            )
+            .await
+            .expect("request should succeed");
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body = to_bytes(response.into_body(), usize::MAX)
+            .await
+            .expect("body should read");
+        serde_json::from_slice(&body).expect("json payload should parse")
+    }
 
     #[tokio::test]
     async fn health_returns_runtime_status() {
@@ -1515,6 +1559,8 @@ mod tests {
         let html = String::from_utf8(body.to_vec()).expect("body should be utf-8");
         assert!(html.contains("Riemann Hypothesis Research Lab"));
         assert!(html.contains("Re(s) = 1/2"));
+        assert!(html.contains("$1,000,000"));
+        assert!(html.contains("Clay Mathematics Institute Millennium Prize Problems"));
         assert!(html.contains("/labs/special-functions"));
         assert!(html.contains("/labs/research-findings"));
     }
@@ -1542,6 +1588,8 @@ mod tests {
         let html = String::from_utf8(body.to_vec()).expect("body should be utf-8");
         assert!(html.contains("Geometric Logic Findings Hub"));
         assert!(html.contains("LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE"));
+        assert!(html.contains("RH Proof Program Status"));
+        assert!(html.contains("rh_proof_pipeline_status.json"));
         assert!(html.contains("/labs/riemann-hypothesis"));
     }
 
@@ -1606,8 +1654,65 @@ mod tests {
         assert_eq!(payload.get("result"), Some(&json!(98.0)));
         assert_eq!(payload.get("engine"), Some(&Value::String("digitalcrystal_math_v2".to_string())));
         assert!(payload.get("phase_signature").is_some());
+        assert!(payload.get("path_signature").and_then(Value::as_str).is_some());
+        assert!(payload.get("endpoint_signature").and_then(Value::as_str).is_some());
         assert!(payload.get("rwif_export").is_some());
         assert!(payload.get("bridge_audit").is_some());
+    }
+
+    #[tokio::test]
+    async fn t1_conformance_uses_path_signature_for_constraint_distinguishability() {
+        let lhs = eval_math_payload("(2 + 3) + 4").await;
+        let rhs = eval_math_payload("2 + (3 + 4)").await;
+
+        assert_ne!(
+            lhs.get("path_signature").and_then(Value::as_str),
+            rhs.get("path_signature").and_then(Value::as_str)
+        );
+    }
+
+    #[tokio::test]
+    async fn t2_conformance_explicit_signatures_are_stable_across_runs() {
+        let expression = "(1 * 3) + (2 * 3)";
+        let mut path_signatures = HashSet::new();
+        let mut endpoint_signatures = HashSet::new();
+
+        for _ in 0..5 {
+            let payload = eval_math_payload(expression).await;
+            path_signatures.insert(
+                payload
+                    .get("path_signature")
+                    .and_then(Value::as_str)
+                    .expect("path signature should be present")
+                    .to_string(),
+            );
+            endpoint_signatures.insert(
+                payload
+                    .get("endpoint_signature")
+                    .and_then(Value::as_str)
+                    .expect("endpoint signature should be present")
+                    .to_string(),
+            );
+        }
+
+        assert_eq!(path_signatures.len(), 1);
+        assert_eq!(endpoint_signatures.len(), 1);
+    }
+
+    #[tokio::test]
+    async fn t3_conformance_witness_uses_explicit_signatures() {
+        let lhs = eval_math_payload("(2 * 3) * 4").await;
+        let rhs = eval_math_payload("2 * (3 * 4)").await;
+
+        assert_eq!(lhs.get("result"), rhs.get("result"));
+        assert_ne!(
+            lhs.get("path_signature").and_then(Value::as_str),
+            rhs.get("path_signature").and_then(Value::as_str)
+        );
+        assert_ne!(
+            lhs.get("endpoint_signature").and_then(Value::as_str),
+            rhs.get("endpoint_signature").and_then(Value::as_str)
+        );
     }
 
     #[tokio::test]

@@ -1,16 +1,14 @@
 #!/bin/python3
 """Generate first geometric-logic witness catalog using live CSIF math endpoint.
 
-This script operationalizes provisional PSI/EI encoders from currently exposed
-response fields:
-- PSI: derivation trace operator path encoding
-- EI: endpoint value + terminal phase signature encoding
+This script operationalizes first-class API signature fields:
+- PSI: payload.path_signature
+- EI: payload.endpoint_signature
 """
 
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import urllib.request
 from dataclasses import dataclass
@@ -49,36 +47,11 @@ def post_eval(expression: str) -> dict:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def hash_json(value: object) -> str:
-    blob = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return hashlib.sha256(blob).hexdigest()
-
-
-def make_psi(payload: dict) -> tuple[str, object]:
-    trace = payload.get("derivation_trace") or []
-    psi_struct = [
-        {
-            "step": step.get("step"),
-            "rule": step.get("rule"),
-            "op": (step.get("geometry") or {}).get("op"),
-            "base_phase": (step.get("geometry") or {}).get("base_phase"),
-            "expr": step.get("expression"),
-        }
-        for step in trace
-    ]
-    return hash_json(psi_struct), psi_struct
-
-
-def make_ei(payload: dict) -> tuple[str, object]:
-    phase = payload.get("phase_signature") or {}
-    ei_struct = {
-        "result": payload.get("result"),
-        "result_latex": payload.get("result_latex"),
-        "final_theta": phase.get("final_theta"),
-        "cumulative_theta": phase.get("cumulative_theta"),
-        "crystal_state": phase.get("crystal_state"),
-    }
-    return hash_json(ei_struct), ei_struct
+def require_signature(payload: dict, field_name: str) -> str:
+    value = payload.get(field_name)
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"required signature field missing or invalid: {field_name}")
+    return value
 
 
 def main() -> None:
@@ -102,8 +75,8 @@ def main() -> None:
         runs = []
         for run_idx in range(1, RUN_REPEATS + 1):
             payload = post_eval(case.expression)
-            psi_sig, psi_struct = make_psi(payload)
-            ei_sig, ei_struct = make_ei(payload)
+            psi_sig = require_signature(payload, "path_signature")
+            ei_sig = require_signature(payload, "endpoint_signature")
             row = {
                 "case_id": case.case_id,
                 "family": case.family,
@@ -115,8 +88,8 @@ def main() -> None:
                 "final_theta": (payload.get("phase_signature") or {}).get("final_theta"),
                 "cumulative_theta": (payload.get("phase_signature") or {}).get("cumulative_theta"),
                 "trace_len": len(payload.get("derivation_trace") or []),
-                "psi_struct": psi_struct,
-                "ei_struct": ei_struct,
+                "has_path_signature": isinstance(payload.get("path_signature"), str),
+                "has_endpoint_signature": isinstance(payload.get("endpoint_signature"), str),
             }
             rows.append(row)
             runs.append(row)
@@ -169,6 +142,8 @@ def main() -> None:
 
     report = {
         "api_url": API_URL,
+        "signature_source": "explicit_api_fields",
+        "required_signature_fields": ["path_signature", "endpoint_signature"],
         "run_repeats": RUN_REPEATS,
         "case_count": len(cases),
         "row_count": len(rows),
@@ -176,11 +151,14 @@ def main() -> None:
             "T1_constraint_distinguishability_pass": t1_pass,
             "T2_endpoint_stability_all_pass": all(v["psi_stable"] and v["ei_stable"] for v in t2.values()),
             "T3_path_endpoint_decoupling_witnesses": t3_witnesses,
+            "signature_fields_present_all": all(
+                row["has_path_signature"] and row["has_endpoint_signature"] for row in rows
+            ),
         },
         "stability": t2,
         "pair_results": pair_results,
-        "psi_encoder_note": "Provisional PSI hash over derivation_trace rule/op/base_phase/expression.",
-        "ei_encoder_note": "Provisional EI hash over result + final/cumulative theta + crystal_state.",
+        "psi_encoder_note": "Uses payload.path_signature directly from API response.",
+        "ei_encoder_note": "Uses payload.endpoint_signature directly from API response.",
     }
 
     with CSV_PATH.open("w", newline="", encoding="utf-8") as f:

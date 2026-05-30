@@ -1,0 +1,75 @@
+{
+  "program": "Riemann Hypothesis Prize Proof Pipeline",
+  "summary": {
+    "total_obligations": 6,
+    "satisfied": 5,
+    "open": 1,
+    "prize_ready": false
+  },
+  "obligations": [
+    {
+      "id": "O1-framework",
+      "description": "Formal invariant framework (PSI/EI) is documented.",
+      "required_paths": [
+        "docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md"
+      ],
+      "status": "satisfied",
+      "missing_paths": []
+    },
+    {
+      "id": "O2-witness-catalog",
+      "description": "Deterministic witness catalog exists with T1/T2/T3 checks.",
+      "required_paths": [
+        "docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md",
+        "docs/findings/artifacts/logic_geometry_witness_report.json"
+      ],
+      "status": "satisfied",
+      "missing_paths": []
+    },
+    {
+      "id": "O3-transition-atlas",
+      "description": "Transition atlas and threshold CI artifacts exist.",
+      "required_paths": [
+        "docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md",
+        "docs/findings/artifacts/hafnian_flux_transition_thresholds.json"
+      ],
+      "status": "satisfied",
+      "missing_paths": []
+    },
+    {
+      "id": "O4-rh-problem-clarity",
+      "description": "RH problem statement and prize criteria are documented in product UI.",
+      "required_paths": [
+        "apps/api/src/main.rs"
+      ],
+      "status": "satisfied",
+      "missing_paths": []
+    },
+    {
+      "id": "O5-explicit-signatures",
+      "description": "First-class API path/endpoint signatures are mandatory and consumed by witness conformance artifacts.",
+      "required_paths": [
+        "crates/digitalcrystal-engine/src/lib.rs",
+        "docs/findings/artifacts/logic_geometry_witness_report.json"
+      ],
+      "status": "satisfied",
+      "missing_paths": []
+    },
+    {
+      "id": "O6-theorem-proof",
+      "description": "A complete formal proof (or disproof) document exists and is externally verifiable.",
+      "required_paths": [
+        "docs/findings/RH_COMPLETE_PROOF.md"
+      ],
+      "status": "open",
+      "missing_paths": [
+        "docs/findings/RH_COMPLETE_PROOF.md"
+      ]
+    }
+  ],
+  "next_actions": [
+    "Add conformance tests for theorem candidates T1/T2/T3.",
+    "Produce RH-specific theorem chain with externally reviewable proof obligations.",
+    "Draft and validate complete proof manuscript candidate."
+  ]
+}
