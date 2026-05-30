@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -63,6 +64,151 @@ def explicit_signature_contract_ok() -> tuple[bool, list[str]]:
             missing.append("logic_geometry_witness_report.json::signature_fields_present_all")
 
     return len(missing) == 0, missing
+
+
+def section_by_heading(markdown: str, heading: str) -> str:
+    marker = f"\n{heading}\n"
+    start = markdown.find(marker)
+    if start == -1:
+        if markdown.startswith(f"{heading}\n"):
+            start = 0
+        else:
+            return ""
+    else:
+        start += 1
+
+    content_start = start + len(heading) + 1
+    remainder = markdown[content_start:]
+    next_header_offset = remainder.find("\n## ")
+    if next_header_offset == -1:
+        return remainder.strip()
+    return remainder[:next_header_offset].strip()
+
+
+def contradiction_audit_expected_hash() -> tuple[str, list[str]]:
+    missing = []
+    proof_path = "docs/findings/RH_COMPLETE_PROOF.md"
+    registry_path = "docs/findings/RH_LEMMA_REGISTRY_V0_1.md"
+
+    if not exists(proof_path):
+        missing.append(proof_path)
+        proof_section = ""
+    else:
+        proof_text = read_text(proof_path)
+        proof_section = section_by_heading(proof_text, "## 11. Contradiction Audit Mirror (C6-SUB-06)")
+        if not proof_section:
+            missing.append(f"{proof_path}::missing_section::## 11. Contradiction Audit Mirror (C6-SUB-06)")
+
+    if not exists(registry_path):
+        missing.append(registry_path)
+        registry_section = ""
+    else:
+        registry_text = read_text(registry_path)
+        registry_section = section_by_heading(registry_text, "## 6. Contradiction Audit Table (Linked to Lemma Status)")
+        if not registry_section:
+            missing.append(f"{registry_path}::missing_section::## 6. Contradiction Audit Table (Linked to Lemma Status)")
+
+    payload = f"{proof_section}\n---\n{registry_section}".encode("utf-8")
+    return hashlib.sha256(payload).hexdigest(), missing
+
+
+def external_verification_contract_check() -> tuple[bool, list[str], dict]:
+    """Require external evidence artifacts so prize readiness is never doc-only."""
+    missing: list[str] = []
+    details: dict[str, object] = {
+        "required_artifacts": {
+            "attestations": "docs/findings/artifacts/rh_independent_review_attestations.json",
+            "repro_manifest": "docs/findings/artifacts/rh_reproducibility_manifest.json",
+            "proof_version_lock": "docs/findings/artifacts/rh_proof_version_lock.json",
+        }
+    }
+
+    att_path = details["required_artifacts"]["attestations"]
+    repro_path = details["required_artifacts"]["repro_manifest"]
+    lock_path = details["required_artifacts"]["proof_version_lock"]
+
+    att = load_json(att_path)
+    if att is None:
+        missing.append(att_path)
+        details["attestations_valid"] = False
+    else:
+        attestations = att.get("attestations")
+        if not isinstance(attestations, list) or not attestations:
+            missing.append(f"{att_path}::attestations_missing_or_empty")
+            details["attestations_valid"] = False
+        else:
+            valid_entries = True
+            for index, entry in enumerate(attestations):
+                if not isinstance(entry, dict):
+                    valid_entries = False
+                    missing.append(f"{att_path}::attestation_not_object::{index}")
+                    continue
+                required_fields = ["reviewer_id", "environment_id", "outcome", "signed_reference"]
+                for field in required_fields:
+                    if not entry.get(field):
+                        valid_entries = False
+                        missing.append(f"{att_path}::missing_field::{index}::{field}")
+                if entry.get("outcome") not in {"supports", "rejects", "inconclusive"}:
+                    valid_entries = False
+                    missing.append(f"{att_path}::invalid_outcome::{index}")
+            has_support = any(
+                isinstance(entry, dict) and entry.get("outcome") == "supports"
+                for entry in attestations
+            )
+            if not has_support:
+                valid_entries = False
+                missing.append(f"{att_path}::no_supporting_attestation")
+            details["attestations_valid"] = valid_entries
+
+    repro = load_json(repro_path)
+    if repro is None:
+        missing.append(repro_path)
+        details["repro_manifest_valid"] = False
+    else:
+        runs = repro.get("runs")
+        if not isinstance(runs, list) or not runs:
+            missing.append(f"{repro_path}::runs_missing_or_empty")
+            details["repro_manifest_valid"] = False
+        else:
+            independent_pass = any(
+                isinstance(run, dict)
+                and run.get("environment_origin") == "independent"
+                and run.get("status") == "passed"
+                and run.get("run_id")
+                for run in runs
+            )
+            details["repro_manifest_valid"] = independent_pass
+            if not independent_pass:
+                missing.append(f"{repro_path}::no_independent_passed_run")
+
+    expected_hash, hash_missing = contradiction_audit_expected_hash()
+    details["expected_contradiction_audit_hash"] = expected_hash
+    if hash_missing:
+        missing.extend([f"contradiction_hash_source::{item}" for item in hash_missing])
+
+    lock = load_json(lock_path)
+    if lock is None:
+        missing.append(lock_path)
+        details["proof_version_lock_valid"] = False
+    else:
+        required_lock_fields = ["proof_document", "proof_commit", "contradiction_audit_hash", "locked_at"]
+        lock_ok = True
+        for field in required_lock_fields:
+            if not lock.get(field):
+                lock_ok = False
+                missing.append(f"{lock_path}::missing_field::{field}")
+
+        if lock.get("proof_document") != "docs/findings/RH_COMPLETE_PROOF.md":
+            lock_ok = False
+            missing.append(f"{lock_path}::proof_document_mismatch")
+
+        if lock.get("contradiction_audit_hash") != expected_hash:
+            lock_ok = False
+            missing.append(f"{lock_path}::contradiction_audit_hash_mismatch")
+
+        details["proof_version_lock_valid"] = lock_ok
+
+    return len(missing) == 0, missing, details
 
 
 def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
@@ -208,10 +354,20 @@ def main() -> None:
             description="A complete formal proof (or disproof) document exists and is externally verifiable.",
             required_paths=("docs/findings/RH_COMPLETE_PROOF.md",),
         ),
+        Obligation(
+            id="O7-external-verification",
+            description="Independent external verification artifacts exist and are consistent with contradiction-audit version lock.",
+            required_paths=(
+                "docs/findings/artifacts/rh_independent_review_attestations.json",
+                "docs/findings/artifacts/rh_reproducibility_manifest.json",
+                "docs/findings/artifacts/rh_proof_version_lock.json",
+            ),
+        ),
     ]
 
     checks = []
     theorem_proof_check_details = {}
+    external_verification_details = {}
     for item in obligations:
         missing = [path for path in item.required_paths if not exists(path)]
         if item.id == "O5-explicit-signatures":
@@ -223,6 +379,13 @@ def main() -> None:
             theorem_proof_check_details = theorem_details
             if not theorem_ok:
                 missing.extend(theorem_missing)
+        if item.id == "O7-external-verification":
+            external_ok, external_missing, external_details = external_verification_contract_check()
+            external_verification_details = external_details
+            if not external_ok:
+                missing.extend(external_missing)
+        # Keep status output readable by collapsing duplicate diagnostics.
+        missing = list(dict.fromkeys(missing))
         checks.append(
             {
                 "id": item.id,
@@ -247,11 +410,12 @@ def main() -> None:
         "obligations": checks,
         "gate_details": {
             "O6-theorem-proof": theorem_proof_check_details,
+            "O7-external-verification": external_verification_details,
         },
         "next_actions": [
-            "Add conformance tests for theorem candidates T1/T2/T3.",
-            "Produce RH-specific theorem chain with externally reviewable proof obligations.",
-            "Draft and validate complete proof manuscript candidate.",
+            "Collect independent signed review attestations artifact.",
+            "Record at least one passed reproducibility run from an independent environment.",
+            "Lock theorem-proof artifact version with matching contradiction-audit hash.",
         ],
     }
 

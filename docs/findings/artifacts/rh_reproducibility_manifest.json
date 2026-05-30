@@ -1,0 +1,27 @@
+{
+  "schema_version": "RH_EXT_VERIFY_V1",
+  "program": "Riemann Hypothesis Prize Proof Pipeline",
+  "runs": [
+    {
+      "run_id": "TEMPLATE_RUN_ID",
+      "environment_id": "TEMPLATE_ENVIRONMENT_ID",
+      "environment_origin": "independent",
+      "executor": "TEMPLATE_EXECUTOR",
+      "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+      "status": "failed",
+      "commands": [
+        "cargo test -p digitalcrystal-engine",
+        "cargo test -p digitalcrystal-api",
+        "/bin/python3 scripts/logic_geometry_witness_catalog.py",
+        "/bin/python3 scripts/rh_proof_pipeline_status.py"
+      ],
+      "artifact_checks": [
+        {
+          "path": "docs/findings/artifacts/rh_proof_pipeline_status.json",
+          "status": "pending"
+        }
+      ],
+      "notes": "Template run. Replace with a real passed independent run for gate closure."
+    }
+  ]
+}

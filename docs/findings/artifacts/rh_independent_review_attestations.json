@@ -1,0 +1,16 @@
+{
+  "schema_version": "RH_EXT_VERIFY_V1",
+  "program": "Riemann Hypothesis Prize Proof Pipeline",
+  "attestations": [
+    {
+      "reviewer_id": "TEMPLATE_REVIEWER_ID",
+      "reviewer_affiliation": "TEMPLATE_AFFILIATION",
+      "environment_id": "TEMPLATE_ENVIRONMENT_ID",
+      "outcome": "inconclusive",
+      "scope": "proof-structure|artifact-reproducibility|contradiction-audit",
+      "review_date": "YYYY-MM-DD",
+      "signed_reference": "TEMPLATE_SIGNATURE_OR_ATTESTATION_URI",
+      "notes": "Template entry. Replace with real independent reviewer outcome."
+    }
+  ]
+}

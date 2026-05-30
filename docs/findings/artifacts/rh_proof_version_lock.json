@@ -1,0 +1,8 @@
+{
+  "schema_version": "RH_EXT_VERIFY_V1",
+  "proof_document": "docs/findings/RH_COMPLETE_PROOF.md",
+  "proof_commit": "TEMPLATE_COMMIT_SHA",
+  "contradiction_audit_hash": "TEMPLATE_CONTRADICTION_AUDIT_HASH",
+  "locked_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "lock_notes": "Template lock. Set proof commit and contradiction hash to real values before closure."
+}

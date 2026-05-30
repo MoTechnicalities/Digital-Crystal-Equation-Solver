@@ -1,10 +1,10 @@
 {
   "program": "Riemann Hypothesis Prize Proof Pipeline",
   "summary": {
-    "total_obligations": 6,
+    "total_obligations": 7,
     "satisfied": 6,
-    "open": 0,
-    "prize_ready": true
+    "open": 1,
+    "prize_ready": false
   },
   "obligations": [
     {
@@ -63,6 +63,21 @@
       ],
       "status": "satisfied",
       "missing_paths": []
+    },
+    {
+      "id": "O7-external-verification",
+      "description": "Independent external verification artifacts exist and are consistent with contradiction-audit version lock.",
+      "required_paths": [
+        "docs/findings/artifacts/rh_independent_review_attestations.json",
+        "docs/findings/artifacts/rh_reproducibility_manifest.json",
+        "docs/findings/artifacts/rh_proof_version_lock.json"
+      ],
+      "status": "open",
+      "missing_paths": [
+        "docs/findings/artifacts/rh_independent_review_attestations.json::no_supporting_attestation",
+        "docs/findings/artifacts/rh_reproducibility_manifest.json::no_independent_passed_run",
+        "docs/findings/artifacts/rh_proof_version_lock.json::contradiction_audit_hash_mismatch"
+      ]
     }
   ],
   "gate_details": {
@@ -107,11 +122,22 @@
       },
       "repro_commands_present": true,
       "review_checklist_present": true
+    },
+    "O7-external-verification": {
+      "required_artifacts": {
+        "attestations": "docs/findings/artifacts/rh_independent_review_attestations.json",
+        "repro_manifest": "docs/findings/artifacts/rh_reproducibility_manifest.json",
+        "proof_version_lock": "docs/findings/artifacts/rh_proof_version_lock.json"
+      },
+      "attestations_valid": false,
+      "repro_manifest_valid": false,
+      "expected_contradiction_audit_hash": "d8410a51fea9327d147f766443c1c0111d3c587d0757de129f0e6a389854e087",
+      "proof_version_lock_valid": false
     }
   },
   "next_actions": [
-    "Add conformance tests for theorem candidates T1/T2/T3.",
-    "Produce RH-specific theorem chain with externally reviewable proof obligations.",
-    "Draft and validate complete proof manuscript candidate."
+    "Collect independent signed review attestations artifact.",
+    "Record at least one passed reproducibility run from an independent environment.",
+    "Lock theorem-proof artifact version with matching contradiction-audit hash."
   ]
 }
