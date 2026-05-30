@@ -22,6 +22,10 @@ This directory stores reproducible experimental findings generated from the Digi
   - Prize-proof development program with obligation stages and artifact-driven status.
 - [RH_THEOREM_CHAIN_V0_1.md](RH_THEOREM_CHAIN_V0_1.md)
   - RH-specific theorem-obligation chain scaffold from signature invariants to final manuscript.
+- [RH_EQUIVALENT_STATEMENT_MAP_V0_1.md](RH_EQUIVALENT_STATEMENT_MAP_V0_1.md)
+  - Assumption-aware RH equivalent-statement mapping layer for theorem-chain C4.
+- [RH_LEMMA_REGISTRY_V0_1.md](RH_LEMMA_REGISTRY_V0_1.md)
+  - Lemma closure and contradiction-policy registry for theorem-chain C5.
 - [RH_COMPLETE_PROOF.md](RH_COMPLETE_PROOF.md)
   - First structured external-review manuscript scaffold anchored to theorem-chain obligations.
 

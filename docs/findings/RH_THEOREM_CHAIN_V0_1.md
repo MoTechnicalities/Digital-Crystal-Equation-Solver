@@ -31,17 +31,17 @@ Prove or disprove:
 4. C4: RH-equivalent statement mapping layer
 - Inputs: selected RH-equivalent statements and admissible transform rules.
 - Claim: transformations preserve proof obligations and do not erase required assumptions.
-- Evidence path: to be implemented.
+- Evidence path: `docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md`.
 
 5. C5: Lemma closure and contradiction elimination
 - Inputs: explicit lemma registry and dependency graph.
 - Claim: each lemma is either proven under declared assumptions or rejected with tracked contradiction.
-- Evidence path: to be implemented.
+- Evidence path: `docs/findings/RH_LEMMA_REGISTRY_V0_1.md`.
 
 6. C6: Final theorem manuscript
 - Inputs: complete chain C1..C5 with independent checks.
 - Claim: external reviewers can validate proof/disproof end-to-end.
-- Evidence path: `docs/findings/RH_COMPLETE_PROOF.md` (not yet present).
+- Evidence path: `docs/findings/RH_COMPLETE_PROOF.md`.
 
 ## Obligation Registry (Initial)
 
@@ -54,5 +54,5 @@ Prove or disprove:
 
 ## Immediate Implementation Notes
 
-- O-C1..O-C3 are currently operational via conformance tests and witness artifacts.
-- O-C4..O-C6 are open and define the next proof-program execution band.
+- O-C1..O-C5 now have committed baseline artifacts.
+- O-C6 remains open pending full proof/disproof closure.

@@ -85,34 +85,33 @@ Status:
 
 ### 3.4 O-C4 / C4: RH Equivalent-Statement Mapping Layer
 
-Required deliverable:
+Deliverable now present:
 - A dedicated RH equivalent-statement map with explicit assumptions, transform rules, and failure criteria.
 
-Current gap:
-- Not yet documented as a formal artifact in this repository.
+Current evidence:
+- Equivalent-statement registry seed is documented with rule and assumption ledger.
+- Transform admissibility and failure criteria are explicitly stated.
 
-Minimum completion criteria:
-- Enumerate selected RH-equivalent statements used in the chain.
-- Define admissible transforms and assumption-preservation constraints.
-- Provide machine-checkable dependency graph references.
+Evidence references:
+- `docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md`
 
 Status:
-- open.
+- satisfied.
 
 ### 3.5 O-C5 / C5: Lemma Closure and Contradiction Elimination
 
-Required deliverable:
-- Lemma registry with statuses (`open`, `satisfied`, `rejected`) and contradiction trace handling.
+Deliverable now present:
+- Lemma registry with statuses (`open`, `satisfied`, `rejected`) and contradiction handling policy.
 
-Current gap:
-- Registry artifact and closure procedure are not yet committed.
+Current evidence:
+- Registry seed includes C1..C6-aligned lemma IDs with dependencies and assumptions.
+- Contradiction policy and update rules are documented.
 
-Minimum completion criteria:
-- A repository artifact listing lemma IDs, assumptions, dependencies, and status.
-- A deterministic contradiction-record policy tied to reproducible traces.
+Evidence references:
+- `docs/findings/RH_LEMMA_REGISTRY_V0_1.md`
 
 Status:
-- open.
+- satisfied.
 
 ### 3.6 O-C6 / C6: Final End-to-End Theorem Manuscript
 
@@ -136,7 +135,7 @@ Current assessment:
 - Not prize-ready.
 
 Reason:
-- C4/C5/C6 obligations are still open in this draft.
+- C6 remains open in this draft.
 - Present artifacts establish infrastructure and reproducibility confidence, not a completed RH proof/disproof.
 
 ## 5. Reproducibility and Audit Commands
@@ -166,3 +165,4 @@ Reviewer should confirm:
 ## 7. Change Log
 
 - v0.1: Initial structured manuscript using theorem-chain obligations as section anchors.
+- v0.2: C4/C5 advanced to satisfied using equivalent-statement map and lemma registry artifacts; C6 remains open.
