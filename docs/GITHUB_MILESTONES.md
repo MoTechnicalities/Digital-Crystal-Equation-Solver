@@ -209,3 +209,17 @@ Acceptance criteria:
 
 Spec refs:
 - `CSIF_RWIF_V2_PROJECT_BLUEPRINT.md`
+
+### Issue 6.3: Validate hafnian phase-flux probe across controlled matrix families
+
+Summary:
+- extend the new hafnian flux-probe instrumentation with a reproducible experiment set and publish stability findings
+
+Acceptance criteria:
+- experiment cases cover coherent, partially coherent, and symmetry-perturbed complex symmetric matrices
+- each run captures `coherence_magnitude`, `symmetry_gap_mean_abs`, `observed_hafnian_theta`, `predicted_uniform_theta`, and `uniform_phase_residual`
+- at least one documented finding report is kept current in `docs/findings/`
+
+Spec refs:
+- `CSIF_V2_ENGINE_SPEC.md`
+- `CSIF_V2_CONFORMANCE_TEST_SPEC.md`

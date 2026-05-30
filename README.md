@@ -59,6 +59,7 @@ DigitalCrystal/
 ├── data/rwif/                  # RWIF fixtures and migrated banks
 ├── docker/                     # container support files if expanded later
 ├── docs/adr/                   # architectural decision records
+├── docs/findings/              # experimental findings and reproducible results
 ├── scripts/                    # helper automation
 ├── specs/csif-guard/           # carried-forward governing specs
 ├── tests/conformance/          # conformance fixtures and harnesses
@@ -114,10 +115,33 @@ docker build -t digitalcrystal:dev .
 ```
 
 Available starter routes:
+- `GET /`
+- `GET /labs/special-functions`
 - `GET /health`
 - `GET /v1/config`
+- `GET /v1/platform/modules`
+- `POST /v1/csif/math`
 - `POST /v1/rwif/validate`
 - `POST /v1/solve/linear`
+
+The current API now exposes the first platform shell for the multi-domain product direction:
+- a landing page served directly by the Rust API at `/`
+- a first interactive Special Functions Lab page at `/labs/special-functions`
+- a typed module catalog at `/v1/platform/modules`
+- a first deterministic math endpoint at `/v1/csif/math`
+- foundation solver and RWIF endpoints that future domain packs will build on
+
+Current `POST /v1/csif/math` slice:
+- follows the predecessor request shape: `expression`, optional `mode`, optional `angle_unit`
+- supports deterministic scalar, matrix-literal, and first-pass complex expressions with `+`, `-`, `*`, `/`, `^`, parentheses, `[[...], [...]]`, `i`, `pi`, `e`, `abs`, `arg`, `conj`, `exp`, `ln`, `log`, `gamma`, `lambertw`, `zeta`, `polylog`, `gammainc`, `besselj`, `bessely`, `besseli`, `besselk`, `j_sph`, `det`, `inverse`, `hafnian`, `tf`, `sqrt`, `sin`, and `cos`
+- supports implicit complex literals such as `2+3i` and expressions such as `exp(i*pi) + 1`
+- uses complex-domain continuation for `bessely` and `besselk` instead of the earlier restricted real-only branch
+- returns matrix-valued results when appropriate, a richer derivation trace, step-level `bridge_audit` math-job diagnostics, a phase signature with both discrete slot and cumulative trajectory values, and an RWIF-shaped export artifact
+
+Current `/labs/special-functions` slice:
+- evaluates expressions directly against `/v1/csif/math`
+- renders derivation trace, bridge audit, RWIF export, and raw JSON
+- includes matrix and transfer-function samples, expanded Bessel samples, and a selectable phase visualization that can render either discrete operator slots or cumulative composition
 
 ## License
 
@@ -131,3 +155,4 @@ Start here, in order:
 3. [specs/csif-guard/CSIF_V2_RUST_ENGINE_TRAITS.md](specs/csif-guard/CSIF_V2_RUST_ENGINE_TRAITS.md)
 4. [ROADMAP.md](ROADMAP.md)
 5. [docs/GITHUB_MILESTONES.md](docs/GITHUB_MILESTONES.md)
+6. [docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md)
