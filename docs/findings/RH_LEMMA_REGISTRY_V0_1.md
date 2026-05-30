@@ -70,3 +70,18 @@ When contradiction is detected:
 - Any dependency change requires updating affected lemma statuses in the same commit.
 - A lemma may move from `satisfied` to `open` if assumptions change.
 - A lemma marked `rejected` requires an explicit replacement path before downstream closure resumes.
+
+## 6. Contradiction Audit Table (Linked to Lemma Status)
+
+| Audit ID | Lemma ID | Current Status | Contradiction Flag | Blocking Downstream? | Resolution Note |
+| --- | --- | --- | --- | --- | --- |
+| CA-01 | `L-C1-DET` | satisfied | false | no | deterministic checks stable |
+| CA-02 | `L-C2-DIST` | satisfied | false | no | path-distinguishability checks stable |
+| CA-03 | `L-C3-DECOUPLE` | satisfied | false | no | witness families reproducible |
+| CA-04 | `L-C4-MAP` | satisfied | false | no | map assumptions declared and bounded |
+| CA-05 | `L-C5-CLOSURE` | satisfied | false | no | contradiction policy enforced |
+| CA-06 | `L-C6-FINAL` | open | false | no | final closure in progress |
+
+Audit assertion:
+- No lemma currently has `rejected` status.
+- No unresolved contradiction blocks downstream closure at this time.

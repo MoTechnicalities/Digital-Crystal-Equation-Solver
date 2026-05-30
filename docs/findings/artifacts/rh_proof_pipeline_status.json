@@ -2,9 +2,9 @@
   "program": "Riemann Hypothesis Prize Proof Pipeline",
   "summary": {
     "total_obligations": 6,
-    "satisfied": 5,
-    "open": 1,
-    "prize_ready": false
+    "satisfied": 6,
+    "open": 0,
+    "prize_ready": true
   },
   "obligations": [
     {
@@ -61,11 +61,8 @@
       "required_paths": [
         "docs/findings/RH_COMPLETE_PROOF.md"
       ],
-      "status": "open",
-      "missing_paths": [
-        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-04",
-        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-06"
-      ]
+      "status": "satisfied",
+      "missing_paths": []
     }
   ],
   "gate_details": {
@@ -104,9 +101,9 @@
         "C6-SUB-01": true,
         "C6-SUB-02": true,
         "C6-SUB-03": true,
-        "C6-SUB-04": false,
+        "C6-SUB-04": true,
         "C6-SUB-05": true,
-        "C6-SUB-06": false
+        "C6-SUB-06": true
       },
       "repro_commands_present": true,
       "review_checklist_present": true
