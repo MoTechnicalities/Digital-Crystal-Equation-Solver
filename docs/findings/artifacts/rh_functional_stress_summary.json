@@ -1,0 +1,107 @@
+{
+  "program": "RH Functional Stress Map Proxy",
+  "version": "v0.1",
+  "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "probe_count": 96,
+  "top_stress_points": [
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 30.35,
+      "zeta_abs_sigma": 0.24301680743675613,
+      "zeta_abs_reflect": 0.34224210241601455,
+      "symmetry_residual": 0.09922529497925842
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 30.35,
+      "zeta_abs_sigma": 0.34224210241601205,
+      "zeta_abs_reflect": 0.24301680743675613,
+      "symmetry_residual": 0.09922529497925592
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 30.4,
+      "zeta_abs_sigma": 0.3211305648150364,
+      "zeta_abs_reflect": 0.2267569955589016,
+      "symmetry_residual": 0.09437356925613477
+    },
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 30.4,
+      "zeta_abs_sigma": 0.2267569955589016,
+      "zeta_abs_reflect": 0.32113056481503627,
+      "symmetry_residual": 0.09437356925613466
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 30.45,
+      "zeta_abs_sigma": 0.3182174982248668,
+      "zeta_abs_reflect": 0.2241718176549073,
+      "symmetry_residual": 0.09404568056995949
+    },
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 30.45,
+      "zeta_abs_sigma": 0.2241718176549073,
+      "zeta_abs_reflect": 0.3182174982248626,
+      "symmetry_residual": 0.09404568056995533
+    },
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 25.1,
+      "zeta_abs_sigma": 0.26556269175671504,
+      "zeta_abs_reflect": 0.3405453265713979,
+      "symmetry_residual": 0.07498263481468287
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 25.1,
+      "zeta_abs_sigma": 0.34054532657139486,
+      "zeta_abs_reflect": 0.26556269175671504,
+      "symmetry_residual": 0.07498263481467982
+    },
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 25.0,
+      "zeta_abs_sigma": 0.23984602496103075,
+      "zeta_abs_reflect": 0.3116974947155936,
+      "symmetry_residual": 0.07185146975456286
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 25.0,
+      "zeta_abs_sigma": 0.31169749471558994,
+      "zeta_abs_reflect": 0.23984602496103075,
+      "symmetry_residual": 0.0718514697545592
+    },
+    {
+      "sigma": 0.7,
+      "one_minus_sigma": 0.30000000000000004,
+      "t": 25.05,
+      "zeta_abs_sigma": 0.24571397389711616,
+      "zeta_abs_reflect": 0.3168649230764527,
+      "symmetry_residual": 0.07115094917933654
+    },
+    {
+      "sigma": 0.3,
+      "one_minus_sigma": 0.7,
+      "t": 25.05,
+      "zeta_abs_sigma": 0.31686492307645253,
+      "zeta_abs_reflect": 0.24571397389711616,
+      "symmetry_residual": 0.07115094917933637
+    }
+  ],
+  "max_residual": 0.09922529497925842,
+  "median_residual": 0.022649364530249128,
+  "scope_note": "Symmetry residual proxy for exploratory targeting; not a formal functional-equation proof metric."
+}

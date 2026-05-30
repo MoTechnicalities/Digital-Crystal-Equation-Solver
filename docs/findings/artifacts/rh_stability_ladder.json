@@ -1,0 +1,211 @@
+{
+  "program": "RH Stability Ladder",
+  "version": "v0.1",
+  "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "source_refine_artifact": "docs/findings/artifacts/rh_counterexample_refine_candidates.json",
+  "points_analyzed": 6,
+  "eps_levels": [
+    0.01,
+    0.005,
+    0.001
+  ],
+  "ladder": [
+    {
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "base_abs": 0.0023517060212223844,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.013602881580091623,
+          "span": 0.011251175558869238,
+          "span_ratio_to_base": 4.784261067214954,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.00796259083106079,
+          "span": 0.0056108848098384055,
+          "span_ratio_to_base": 2.385878489574962,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.0012417780160780283,
+          "max_abs": 0.00346982315664615,
+          "span": 0.002228045140568122,
+          "span_ratio_to_base": 0.9474165224997021,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    },
+    {
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "base_abs": 0.0023517060212223844,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.013602881580091623,
+          "span": 0.011251175558869238,
+          "span_ratio_to_base": 4.784261067214954,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.00796259083106079,
+          "span": 0.0056108848098384055,
+          "span_ratio_to_base": 2.385878489574962,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.0012417780160780283,
+          "max_abs": 0.00346982315664615,
+          "span": 0.002228045140568122,
+          "span_ratio_to_base": 0.9474165224997021,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    },
+    {
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "base_abs": 0.0023517060212223844,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.013602881580091623,
+          "span": 0.011251175558869238,
+          "span_ratio_to_base": 4.784261067214954,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.00796259083106079,
+          "span": 0.0056108848098384055,
+          "span_ratio_to_base": 2.385878489574962,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.0012417780160780283,
+          "max_abs": 0.00346982315664615,
+          "span": 0.002228045140568122,
+          "span_ratio_to_base": 0.9474165224997021,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    },
+    {
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "base_abs": 0.0023517060212223844,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.013602881580091623,
+          "span": 0.011251175558869238,
+          "span_ratio_to_base": 4.784261067214954,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.0023517060212223844,
+          "max_abs": 0.00796259083106079,
+          "span": 0.0056108848098384055,
+          "span_ratio_to_base": 2.385878489574962,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.0012417780160780283,
+          "max_abs": 0.00346982315664615,
+          "span": 0.002228045140568122,
+          "span_ratio_to_base": 0.9474165224997021,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    },
+    {
+      "sigma": 0.4975,
+      "t": 14.134725141,
+      "base_abs": 0.002351706021222535,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.002351706021222535,
+          "max_abs": 0.013602881580091854,
+          "span": 0.01125117555886932,
+          "span_ratio_to_base": 4.784261067214683,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.002351706021222535,
+          "max_abs": 0.007962590831060467,
+          "span": 0.005610884809837933,
+          "span_ratio_to_base": 2.3858784895746084,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.001241778016078234,
+          "max_abs": 0.003469823156645978,
+          "span": 0.0022280451405677438,
+          "span_ratio_to_base": 0.9474165224994806,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    },
+    {
+      "sigma": 0.495,
+      "t": 14.134725141,
+      "base_abs": 0.004089260600049663,
+      "levels": [
+        {
+          "eps": 0.01,
+          "min_abs": 0.004089260600049663,
+          "max_abs": 0.015112466027756765,
+          "span": 0.011023205427707104,
+          "span_ratio_to_base": 2.6956475768683537,
+          "stable": false
+        },
+        {
+          "eps": 0.005,
+          "min_abs": 0.0014894643524299602,
+          "max_abs": 0.009515709537617198,
+          "span": 0.008026245185187238,
+          "span_ratio_to_base": 1.9627619685303896,
+          "stable": false
+        },
+        {
+          "eps": 0.001,
+          "min_abs": 0.0030939687779327294,
+          "max_abs": 0.005138298982904675,
+          "span": 0.0020443302049719453,
+          "span_ratio_to_base": 0.4999266138595123,
+          "stable": true
+        }
+      ],
+      "stable_all_levels": false
+    }
+  ],
+  "summary": {
+    "stable_points": 0,
+    "unstable_points": 6
+  },
+  "scope_note": "Neighborhood stability proxy only; not a substitute for arbitrary-precision certification."
+}

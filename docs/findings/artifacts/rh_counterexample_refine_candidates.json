@@ -1,0 +1,190 @@
+{
+  "program": "RH Counterexample Adaptive Refine",
+  "version": "v0.1",
+  "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "search": {
+    "top_seed_count": 8,
+    "refine_iters": 8,
+    "candidate_eps": 0.001,
+    "validation_eps": 1e-06,
+    "coarse_probe_count": 300
+  },
+  "coarse_best": [
+    {
+      "sigma": 0.55,
+      "t": 14.124725141,
+      "zeta_abs": 0.03945927233086306,
+      "zeta_re": 0.039453947131056856,
+      "zeta_im": -0.000648250461616132,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.55,
+      "t": 14.144725141,
+      "zeta_abs": 0.04004469054615954,
+      "zeta_re": 0.0373576182712085,
+      "zeta_im": 0.014421705795097479,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.45,
+      "t": 14.124725141,
+      "zeta_abs": 0.040762303768998684,
+      "zeta_re": -0.03886493515151611,
+      "zeta_im": -0.012291550928364243,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.45,
+      "t": 14.144725141,
+      "zeta_abs": 0.04133959966277078,
+      "zeta_re": -0.041143545336329274,
+      "zeta_im": 0.004021340253643789,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.55,
+      "t": 14.114725141000001,
+      "zeta_abs": 0.041404534177746255,
+      "zeta_re": 0.04059186849753911,
+      "zeta_im": -0.008163066969874108,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.55,
+      "t": 14.154725141,
+      "zeta_abs": 0.042517875694216514,
+      "zeta_re": 0.03639823609197434,
+      "zeta_im": 0.021975854089016523,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.45,
+      "t": 14.114725141000001,
+      "zeta_abs": 0.04282117192269709,
+      "zeta_re": -0.03762650427034076,
+      "zeta_im": -0.02044257667778722,
+      "off_critical_line": true
+    },
+    {
+      "sigma": 0.45,
+      "t": 14.154725141,
+      "zeta_abs": 0.043910733204096886,
+      "zeta_re": -0.04218710201175833,
+      "zeta_im": 0.012181991395944806,
+      "off_critical_line": true
+    }
+  ],
+  "refined": [
+    {
+      "seed_sigma": 0.45,
+      "seed_t": 14.124725141,
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "zeta_abs": 0.0023517060212223844,
+      "zeta_re": -0.002015472063632384,
+      "zeta_im": 0.0012117729040422706,
+      "symmetry_residual": 0.00024429581649738777,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.45,
+      "seed_t": 14.144725141,
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "zeta_abs": 0.0023517060212223844,
+      "zeta_re": -0.002015472063632384,
+      "zeta_im": 0.0012117729040422706,
+      "symmetry_residual": 0.00024429581649738777,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.45,
+      "seed_t": 14.114725141000001,
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "zeta_abs": 0.0023517060212223844,
+      "zeta_re": -0.002015472063632384,
+      "zeta_im": 0.0012117729040422706,
+      "symmetry_residual": 0.00024429581649738777,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.45,
+      "seed_t": 14.154725141,
+      "sigma": 0.49750000000000005,
+      "t": 14.134725141,
+      "zeta_abs": 0.0023517060212223844,
+      "zeta_re": -0.002015472063632384,
+      "zeta_im": 0.0012117729040422706,
+      "symmetry_residual": 0.00024429581649738777,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.55,
+      "seed_t": 14.124725141,
+      "sigma": 0.4975,
+      "t": 14.134725141,
+      "zeta_abs": 0.002351706021222535,
+      "zeta_re": -0.0020154720636326603,
+      "zeta_im": 0.0012117729040421032,
+      "symmetry_residual": 0.0002442958164972373,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.55,
+      "seed_t": 14.144725141,
+      "sigma": 0.495,
+      "t": 14.134725141,
+      "zeta_abs": 0.004089260600049663,
+      "zeta_re": -0.003981057707496077,
+      "zeta_im": 0.0009344687178844497,
+      "symmetry_residual": 0.00027492365470435133,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.55,
+      "seed_t": 14.114725141000001,
+      "sigma": 0.495,
+      "t": 14.134725141,
+      "zeta_abs": 0.004089260600049663,
+      "zeta_re": -0.003981057707496077,
+      "zeta_im": 0.0009344687178844497,
+      "symmetry_residual": 0.00027492365470435133,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    },
+    {
+      "seed_sigma": 0.55,
+      "seed_t": 14.154725141,
+      "sigma": 0.495,
+      "t": 14.134725141,
+      "zeta_abs": 0.004089260600049663,
+      "zeta_re": -0.003981057707496077,
+      "zeta_im": 0.0009344687178844497,
+      "symmetry_residual": 0.00027492365470435133,
+      "off_critical_line": true,
+      "candidate": false,
+      "validated": false
+    }
+  ],
+  "summary": {
+    "candidate_count": 0,
+    "validated_count": 0,
+    "best_refined_abs": 0.0023517060212223844
+  },
+  "scope_note": "Exploratory adaptive minimization only; candidates require independent high-precision validation."
+}
