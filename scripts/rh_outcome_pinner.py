@@ -104,6 +104,30 @@ def summarize_dipole(dipole: dict | None) -> dict:
     return summary
 
 
+def summarize_triangulation(triangulation: dict | None) -> dict:
+    summary = {
+        "artifact_present": triangulation is not None,
+        "window_count": 0,
+        "probe_count": 0,
+        "top_gap_window_count": 0,
+        "max_triangle_side_gap": None,
+        "min_triangulated_abs": None,
+    }
+    if triangulation is None:
+        return summary
+
+    config = triangulation.get("config") or {}
+    top_gap_windows = triangulation.get("top_triangle_gap_windows") or []
+    tri_summary = triangulation.get("summary") or {}
+
+    summary["window_count"] = int(config.get("window_count") or 0)
+    summary["probe_count"] = int(config.get("probe_count") or 0)
+    summary["top_gap_window_count"] = len(top_gap_windows)
+    summary["max_triangle_side_gap"] = tri_summary.get("max_triangle_side_gap")
+    summary["min_triangulated_abs"] = tri_summary.get("min_triangulated_abs")
+    return summary
+
+
 def build_positive_pin_proof(
     t1: bool,
     t2: bool,
@@ -112,6 +136,7 @@ def build_positive_pin_proof(
     has_validated_counterexample: bool,
     transition_present: bool,
     dipole_summary: dict,
+    triangulation_summary: dict,
 ) -> dict:
     premises = [
         {
@@ -151,6 +176,13 @@ def build_positive_pin_proof(
             and int(dipole_summary.get("probe_count") or 0) > 0
             and int(dipole_summary.get("top_window_count") or 0) > 0,
         },
+        {
+            "id": "P-08",
+            "statement": "Triangulation artifact is present with non-empty probes and ranked gap windows.",
+            "holds": bool(triangulation_summary.get("artifact_present"))
+            and int(triangulation_summary.get("probe_count") or 0) > 0
+            and int(triangulation_summary.get("top_gap_window_count") or 0) > 0,
+        },
     ]
     all_hold = all(item["holds"] for item in premises)
     return {
@@ -172,6 +204,7 @@ def build_negative_outcome_exclusion(
     refine_summary: dict,
     stability_summary: dict,
     dipole_summary: dict,
+    triangulation_summary: dict,
 ) -> dict:
     blockers = [
         {
@@ -203,6 +236,13 @@ def build_negative_outcome_exclusion(
             and dipole_summary.get("top_asymmetry_score") is not None
             and not has_validated_counterexample,
         },
+        {
+            "id": "N-06",
+            "statement": "Triangulation windows are present but still do not yield a certified off-critical zero witness.",
+            "holds": bool(triangulation_summary.get("artifact_present"))
+            and triangulation_summary.get("max_triangle_side_gap") is not None
+            and not has_validated_counterexample,
+        },
     ]
     all_hold = all(item["holds"] for item in blockers)
     return {
@@ -226,6 +266,7 @@ def build_branch_comparison_artifact(
     negative_outcome_exclusion: dict,
     geometric_signal_score: int,
     dipole_summary: dict,
+    triangulation_summary: dict,
 ) -> dict:
     selected_branch = {
         "branch": pinned_outcome,
@@ -258,6 +299,7 @@ def build_branch_comparison_artifact(
             "decision_rule": "Select the RH-likely branch only when all positive premises hold and the counterexample branch lacks a validated off-critical-line witness.",
         },
         "dipole_context": dipole_summary,
+        "triangulation_context": triangulation_summary,
         "scope_note": "Comparison artifact only; this is an internal evidence contrast, not an external proof claim.",
     }
 
@@ -354,6 +396,7 @@ def main() -> None:
     refine_path = ART / "rh_counterexample_refine_candidates.json"
     stability_path = ART / "rh_stability_ladder.json"
     dipole_path = ART / "rh_dipole_analysis.json"
+    triangulation_path = ART / "rh_dipole_triangulation.json"
     lemma_registry_path = ROOT / "docs" / "findings" / "RH_LEMMA_REGISTRY_V0_1.md"
 
     witness = load_json(witness_path)
@@ -362,6 +405,7 @@ def main() -> None:
     refine = load_json(refine_path)
     stability = load_json(stability_path)
     dipole = load_json(dipole_path)
+    triangulation = load_json(triangulation_path)
 
     if witness is None:
         raise SystemExit("missing required witness artifact: docs/findings/artifacts/logic_geometry_witness_report.json")
@@ -380,6 +424,7 @@ def main() -> None:
     refine_summary = summarize_refine(refine)
     stability_summary = summarize_stability(stability)
     dipole_summary = summarize_dipole(dipole)
+    triangulation_summary = summarize_triangulation(triangulation)
 
     geometric_signal_score = 0
     geometric_signal_score += 40 if t1 else 0
@@ -395,6 +440,7 @@ def main() -> None:
         has_validated_counterexample=has_validated_counterexample,
         transition_present=transition_present,
         dipole_summary=dipole_summary,
+        triangulation_summary=triangulation_summary,
     )
     negative_outcome_exclusion = build_negative_outcome_exclusion(
         has_validated_counterexample=has_validated_counterexample,
@@ -402,6 +448,7 @@ def main() -> None:
         refine_summary=refine_summary,
         stability_summary=stability_summary,
         dipole_summary=dipole_summary,
+        triangulation_summary=triangulation_summary,
     )
 
     if has_validated_counterexample:
@@ -419,6 +466,7 @@ def main() -> None:
             "No rejected lemmas are currently active in the chain.",
             "No validated off-critical-line candidate has been recorded.",
             "Dipole stress windows are present but none certifies an off-critical zero witness.",
+            "Triangulation follow-up windows are present but none certifies an off-critical zero witness.",
         ]
     else:
         pinned_outcome = "undecided_internal"
@@ -446,6 +494,7 @@ def main() -> None:
         "counterexample_refine_summary": refine_summary,
         "counterexample_stability_summary": stability_summary,
         "dipole_summary": dipole_summary,
+        "triangulation_summary": triangulation_summary,
         "rationale": rationale,
         "proof_contracts": {
             "positive_pin_proof": positive_pin_proof,
@@ -466,6 +515,7 @@ def main() -> None:
         negative_outcome_exclusion=negative_outcome_exclusion,
         geometric_signal_score=geometric_signal_score,
         dipole_summary=dipole_summary,
+        triangulation_summary=triangulation_summary,
     )
     branch_comparison_note = render_branch_comparison_markdown(branch_comparison)
 

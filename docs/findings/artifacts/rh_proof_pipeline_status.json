@@ -71,6 +71,7 @@
         "docs/findings/artifacts/rh_outcome_pinner_status.json",
         "docs/findings/artifacts/rh_outcome_branch_comparison.json",
         "docs/findings/artifacts/rh_dipole_analysis.json",
+        "docs/findings/artifacts/rh_dipole_triangulation.json",
         "docs/findings/RH_COMPLETE_PROOF.md"
       ],
       "status": "satisfied",
@@ -86,13 +87,19 @@
       ],
       "status": "open",
       "missing_paths": [
+        "docs/findings/artifacts/rh_independent_review_attestations.json::schema_version_mismatch",
+        "docs/findings/artifacts/rh_independent_review_attestations.json::missing_closure_contract",
         "docs/findings/artifacts/rh_independent_review_attestations.json::placeholder_value::0::reviewer_id",
         "docs/findings/artifacts/rh_independent_review_attestations.json::placeholder_value::0::environment_id",
         "docs/findings/artifacts/rh_independent_review_attestations.json::placeholder_value::0::signed_reference",
         "docs/findings/artifacts/rh_independent_review_attestations.json::no_supporting_attestation",
         "docs/findings/artifacts/rh_independent_review_attestations.json::supporting_reviewer_missing",
+        "docs/findings/artifacts/rh_reproducibility_manifest.json::schema_version_mismatch",
+        "docs/findings/artifacts/rh_reproducibility_manifest.json::missing_closure_contract",
         "docs/findings/artifacts/rh_reproducibility_manifest.json::no_independent_passed_run",
         "docs/findings/artifacts/rh_reproducibility_manifest.json::missing_passed_status_artifact_check",
+        "docs/findings/artifacts/rh_proof_version_lock.json::schema_version_mismatch",
+        "docs/findings/artifacts/rh_proof_version_lock.json::missing_closure_contract",
         "docs/findings/artifacts/rh_proof_version_lock.json::contradiction_audit_hash_mismatch",
         "docs/findings/artifacts/rh_proof_version_lock.json::invalid_or_placeholder_proof_commit"
       ]
@@ -146,6 +153,7 @@
       "required_pinned_outcome": "rh_likely_true_internal",
       "required_comparison_artifact": "docs/findings/artifacts/rh_outcome_branch_comparison.json",
       "required_dipole_artifact": "docs/findings/artifacts/rh_dipole_analysis.json",
+      "required_triangulation_artifact": "docs/findings/artifacts/rh_dipole_triangulation.json",
       "required_manuscript_section": "## 12. Internal Outcome Pin Contract",
       "positive_pin_premises": {
         "P-01": true,
@@ -154,21 +162,29 @@
         "P-04": true,
         "P-05": true,
         "P-06": true,
-        "P-07": true
+        "P-07": true,
+        "P-08": true
       },
       "negative_outcome_requirements": {
         "N-01": true,
         "N-02": true,
         "N-03": true,
         "N-04": true,
-        "N-05": true
+        "N-05": true,
+        "N-06": true
       },
       "pinner_dipole_summary_present": true,
       "pinner_dipole_probe_count": 25,
       "pinner_dipole_top_asymmetry_score": 0.19487104055925458,
+      "pinner_triangulation_summary_present": true,
+      "pinner_triangulation_probe_count": 36,
+      "pinner_triangulation_max_gap": 0.058914045185849195,
       "dipole_program": "RH Dipole Symmetry Analysis",
       "dipole_probe_count": 25,
       "dipole_top_asymmetry_windows": 10,
+      "triangulation_program": "RH Dipole Triangulation",
+      "triangulation_probe_count": 36,
+      "triangulation_gap_windows": 6,
       "comparison_selected_branch": "rh_likely_true_internal",
       "comparison_excluded_branch": "counterexample_candidate_internal",
       "comparison_has_decision_rule": true,
@@ -181,14 +197,14 @@
         "proof_version_lock": "docs/findings/artifacts/rh_proof_version_lock.json"
       },
       "required_schema_version": "RH_EXT_VERIFY_V2",
-      "attestations_schema_version": "RH_EXT_VERIFY_V2",
+      "attestations_schema_version": "RH_EXT_VERIFY_V1",
       "attestations_valid": false,
       "supporting_attestation_present": false,
-      "repro_schema_version": "RH_EXT_VERIFY_V2",
+      "repro_schema_version": "RH_EXT_VERIFY_V1",
       "repro_manifest_valid": false,
       "independent_pass_with_status_artifact_check": false,
       "expected_contradiction_audit_hash": "1f91aedb4a7685f79f32abca2f3bde50576419736263b6dde0214d685ffa03ce",
-      "lock_schema_version": "RH_EXT_VERIFY_V2",
+      "lock_schema_version": "RH_EXT_VERIFY_V1",
       "proof_version_lock_valid": false,
       "o7_closure_checklist": [
         {

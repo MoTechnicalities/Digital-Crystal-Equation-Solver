@@ -12,7 +12,8 @@
       "Geometric theorem checks T1/T2 pass and T3 witnesses exist.",
       "No rejected lemmas are currently active in the chain.",
       "No validated off-critical-line candidate has been recorded.",
-      "Dipole stress windows are present but none certifies an off-critical zero witness."
+      "Dipole stress windows are present but none certifies an off-critical zero witness.",
+      "Triangulation follow-up windows are present but none certifies an off-critical zero witness."
     ],
     "contract": {
       "target_outcome": "rh_likely_true_internal",
@@ -52,6 +53,11 @@
           "id": "P-07",
           "statement": "Dipole analysis artifact is present with a non-empty probe set and ranked asymmetry windows.",
           "holds": true
+        },
+        {
+          "id": "P-08",
+          "statement": "Triangulation artifact is present with non-empty probes and ranked gap windows.",
+          "holds": true
         }
       ],
       "conclusion_enabled": true,
@@ -66,7 +72,8 @@
       "The coarse counterexample search reports zero candidates.",
       "The adaptive refine search reports zero candidates and zero validated points.",
       "Refined near-miss points do not remain stable across all tested neighborhood scales.",
-      "Dipole stress windows are present but do not produce a certified off-critical zero witness."
+      "Dipole stress windows are present but do not produce a certified off-critical zero witness.",
+      "Triangulation windows are present but still do not yield a certified off-critical zero witness."
     ],
     "contract": {
       "excluded_outcome": "counterexample_candidate_internal",
@@ -96,6 +103,11 @@
           "id": "N-05",
           "statement": "Dipole stress windows are present but do not produce a certified off-critical zero witness.",
           "holds": true
+        },
+        {
+          "id": "N-06",
+          "statement": "Triangulation windows are present but still do not yield a certified off-critical zero witness.",
+          "holds": true
         }
       ],
       "exclusion_enabled": true,
@@ -113,6 +125,14 @@
     "top_window_count": 10,
     "top_asymmetry_score": 0.19487104055925458,
     "min_center_abs": 0.0014894643524299602
+  },
+  "triangulation_context": {
+    "artifact_present": true,
+    "window_count": 6,
+    "probe_count": 36,
+    "top_gap_window_count": 6,
+    "max_triangle_side_gap": 0.058914045185849195,
+    "min_triangulated_abs": 0.011528034004697622
   },
   "scope_note": "Comparison artifact only; this is an internal evidence contrast, not an external proof claim."
 }

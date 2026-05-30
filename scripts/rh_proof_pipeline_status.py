@@ -431,12 +431,14 @@ def internal_outcome_pin_contract_check() -> tuple[bool, list[str], dict]:
     rel_path = "docs/findings/artifacts/rh_outcome_pinner_status.json"
     comparison_path = "docs/findings/artifacts/rh_outcome_branch_comparison.json"
     dipole_path = "docs/findings/artifacts/rh_dipole_analysis.json"
+    triangulation_path = "docs/findings/artifacts/rh_dipole_triangulation.json"
     manuscript_path = "docs/findings/RH_COMPLETE_PROOF.md"
     missing: list[str] = []
     details: dict[str, object] = {
         "required_pinned_outcome": "rh_likely_true_internal",
         "required_comparison_artifact": comparison_path,
         "required_dipole_artifact": dipole_path,
+        "required_triangulation_artifact": triangulation_path,
         "required_manuscript_section": "## 12. Internal Outcome Pin Contract",
         "positive_pin_premises": {},
         "negative_outcome_requirements": {},
@@ -471,12 +473,12 @@ def internal_outcome_pin_contract_check() -> tuple[bool, list[str], dict]:
     if negative.get("exclusion_enabled") is not True:
         missing.append(f"{rel_path}::negative_outcome_exclusion_not_enabled")
 
-    required_positive_ids = ["P-01", "P-02", "P-03", "P-04", "P-05", "P-06", "P-07"]
+    required_positive_ids = ["P-01", "P-02", "P-03", "P-04", "P-05", "P-06", "P-07", "P-08"]
     for item_id in required_positive_ids:
         if details["positive_pin_premises"].get(item_id) is not True:
             missing.append(f"{rel_path}::positive_premise_not_satisfied::{item_id}")
 
-    required_negative_ids = ["N-01", "N-02", "N-03", "N-04", "N-05"]
+    required_negative_ids = ["N-01", "N-02", "N-03", "N-04", "N-05", "N-06"]
     for item_id in required_negative_ids:
         if details["negative_outcome_requirements"].get(item_id) is not True:
             missing.append(f"{rel_path}::negative_requirement_not_satisfied::{item_id}")
@@ -492,6 +494,17 @@ def internal_outcome_pin_contract_check() -> tuple[bool, list[str], dict]:
     elif int(dipole_summary.get("probe_count") or 0) <= 0:
         missing.append(f"{rel_path}::dipole_probe_count_invalid")
 
+    triangulation_summary = payload.get("triangulation_summary") or {}
+    details["pinner_triangulation_summary_present"] = bool(triangulation_summary)
+    details["pinner_triangulation_probe_count"] = int(triangulation_summary.get("probe_count") or 0)
+    details["pinner_triangulation_max_gap"] = triangulation_summary.get("max_triangle_side_gap")
+    if not triangulation_summary:
+        missing.append(f"{rel_path}::missing_triangulation_summary")
+    elif not bool(triangulation_summary.get("artifact_present")):
+        missing.append(f"{rel_path}::triangulation_artifact_not_present")
+    elif int(triangulation_summary.get("probe_count") or 0) <= 0:
+        missing.append(f"{rel_path}::triangulation_probe_count_invalid")
+
     dipole = load_json(dipole_path)
     if dipole is None:
         missing.append(dipole_path)
@@ -505,6 +518,20 @@ def internal_outcome_pin_contract_check() -> tuple[bool, list[str], dict]:
             missing.append(f"{dipole_path}::probe_count_invalid")
         if len(dipole.get("top_asymmetry_windows") or []) == 0:
             missing.append(f"{dipole_path}::missing_top_asymmetry_windows")
+
+    triangulation = load_json(triangulation_path)
+    if triangulation is None:
+        missing.append(triangulation_path)
+    else:
+        details["triangulation_program"] = triangulation.get("program")
+        details["triangulation_probe_count"] = int((triangulation.get("config") or {}).get("probe_count") or 0)
+        details["triangulation_gap_windows"] = len(triangulation.get("top_triangle_gap_windows") or [])
+        if triangulation.get("program") != "RH Dipole Triangulation":
+            missing.append(f"{triangulation_path}::program_mismatch")
+        if int((triangulation.get("config") or {}).get("probe_count") or 0) <= 0:
+            missing.append(f"{triangulation_path}::probe_count_invalid")
+        if len(triangulation.get("top_triangle_gap_windows") or []) == 0:
+            missing.append(f"{triangulation_path}::missing_top_triangle_gap_windows")
 
     comparison = load_json(comparison_path)
     if comparison is None:
@@ -599,6 +626,7 @@ def main() -> None:
                 "docs/findings/artifacts/rh_outcome_pinner_status.json",
                 "docs/findings/artifacts/rh_outcome_branch_comparison.json",
                 "docs/findings/artifacts/rh_dipole_analysis.json",
+                "docs/findings/artifacts/rh_dipole_triangulation.json",
                 "docs/findings/RH_COMPLETE_PROOF.md",
             ),
         ),

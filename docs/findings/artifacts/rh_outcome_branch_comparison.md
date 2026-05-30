@@ -18,6 +18,7 @@ Why this cup:
 - No rejected lemmas are currently active in the chain.
 - No validated off-critical-line candidate has been recorded.
 - Dipole stress windows are present but none certifies an off-critical zero witness.
+- Triangulation follow-up windows are present but none certifies an off-critical zero witness.
 
 Positive contract conclusion:
 - Current internal evidence is sufficient to pin RH to the likely-true branch.
@@ -30,6 +31,7 @@ Positive contract premises:
 - P-05: No validated off-critical-line counterexample candidate is currently recorded. Holds: True.
 - P-06: Transition-threshold support artifact is present. Holds: True.
 - P-07: Dipole analysis artifact is present with a non-empty probe set and ranked asymmetry windows. Holds: True.
+- P-08: Triangulation artifact is present with non-empty probes and ranked gap windows. Holds: True.
 
 ## Excluded Branch
 
@@ -42,6 +44,7 @@ Why not the other cup:
 - The adaptive refine search reports zero candidates and zero validated points.
 - Refined near-miss points do not remain stable across all tested neighborhood scales.
 - Dipole stress windows are present but do not produce a certified off-critical zero witness.
+- Triangulation windows are present but still do not yield a certified off-critical zero witness.
 
 Exclusion contract conclusion:
 - The current artifact set does not justify pinning the counterexample branch.
@@ -52,6 +55,7 @@ Exclusion requirements currently holding:
 - N-03: The adaptive refine search reports zero candidates and zero validated points. Holds: True.
 - N-04: Refined near-miss points do not remain stable across all tested neighborhood scales. Holds: True.
 - N-05: Dipole stress windows are present but do not produce a certified off-critical zero witness. Holds: True.
+- N-06: Triangulation windows are present but still do not yield a certified off-critical zero witness. Holds: True.
 
 ## Contrast Summary
 
