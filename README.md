@@ -156,3 +156,5 @@ Start here, in order:
 4. [ROADMAP.md](ROADMAP.md)
 5. [docs/GITHUB_MILESTONES.md](docs/GITHUB_MILESTONES.md)
 6. [docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md)
+7. [docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md)
+8. [docs/findings/README.md](docs/findings/README.md)

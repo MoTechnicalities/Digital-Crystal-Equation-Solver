@@ -1,0 +1,44 @@
+{
+  "seed": 20260529,
+  "dimension": 6,
+  "cases_per_family": 18,
+  "total_cases": 72,
+  "families": {
+    "coherent": {
+      "count": 18,
+      "coherence_mean": 0.9983042625075862,
+      "coherence_min": 0.9972351132597346,
+      "coherence_max": 0.9992667082187823,
+      "symmetry_gap_mean": 0.0,
+      "residual_abs_mean": 0.0013120405584455942,
+      "residual_abs_max": 0.00509353668525625
+    },
+    "partial_coherence": {
+      "count": 18,
+      "coherence_mean": 0.9473515002236843,
+      "coherence_min": 0.9026769458717372,
+      "coherence_max": 0.9735001241014218,
+      "symmetry_gap_mean": 0.0,
+      "residual_abs_mean": 0.04012759933321992,
+      "residual_abs_max": 0.09644209862581077
+    },
+    "low_coherence": {
+      "count": 18,
+      "coherence_mean": 0.2353724697985219,
+      "coherence_min": 0.06859063963959683,
+      "coherence_max": 0.4230537608404638,
+      "symmetry_gap_mean": 0.0,
+      "residual_abs_mean": 1.6229201244317244,
+      "residual_abs_max": 3.096412869747466
+    },
+    "symmetry_perturbed": {
+      "count": 18,
+      "coherence_mean": 0.9854690463632022,
+      "coherence_min": 0.9583982479138624,
+      "coherence_max": 0.9932199200326833,
+      "symmetry_gap_mean": 0.3168474380750132,
+      "residual_abs_mean": 0.011062151298323454,
+      "residual_abs_max": 0.026245546904415384
+    }
+  }
+}
