@@ -16,6 +16,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Multi-dimension transition atlas with coherence-cliff thresholds and CI bands.
 - [LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md](LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md)
   - Formal definitions for Path Signature Invariant and Endpoint Invariant with theorem candidates.
+- [LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md](LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md)
+  - First experimental witness catalog validating provisional PSI/EI checks (T1/T2/T3).
 
 ## Artifacts
 
@@ -34,3 +36,7 @@ Notable phase-transition artifacts:
 - [artifacts/hafnian_flux_transition_heatmap.svg](artifacts/hafnian_flux_transition_heatmap.svg)
 - [artifacts/hafnian_flux_transition_summary.json](artifacts/hafnian_flux_transition_summary.json)
 - [artifacts/hafnian_flux_transition_thresholds.json](artifacts/hafnian_flux_transition_thresholds.json)
+
+Notable logic-geometry artifacts:
+- [artifacts/logic_geometry_witness_catalog.csv](artifacts/logic_geometry_witness_catalog.csv)
+- [artifacts/logic_geometry_witness_report.json](artifacts/logic_geometry_witness_report.json)

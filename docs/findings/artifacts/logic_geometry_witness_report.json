@@ -1,0 +1,153 @@
+{
+  "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "run_repeats": 5,
+  "case_count": 8,
+  "row_count": 40,
+  "theorem_checks": {
+    "T1_constraint_distinguishability_pass": true,
+    "T2_endpoint_stability_all_pass": true,
+    "T3_path_endpoint_decoupling_witnesses": [
+      "assoc_add_pair_b",
+      "assoc_mul_pair_c",
+      "distrib_pair_d"
+    ]
+  },
+  "stability": {
+    "A1": {
+      "expression": "2 + 2 * 3",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "A2": {
+      "expression": "(2 + 2) * 3",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "B1": {
+      "expression": "(2 + 3) + 4",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "B2": {
+      "expression": "2 + (3 + 4)",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "C1": {
+      "expression": "(2 * 3) * 4",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "C2": {
+      "expression": "2 * (3 * 4)",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "D1": {
+      "expression": "(1 + 2) * 3",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    },
+    "D2": {
+      "expression": "(1 * 3) + (2 * 3)",
+      "psi_stable": true,
+      "ei_stable": true,
+      "psi_variants": 1,
+      "ei_variants": 1
+    }
+  },
+  "pair_results": {
+    "precedence_pair_a": {
+      "left": {
+        "case_id": "A1",
+        "expression": "2 + 2 * 3",
+        "result": 8.0,
+        "psi_sig": "a44e1cb1f9a7aa66253df0e3ae85d9c713e4524e86e69670892222340d4f2e19",
+        "ei_sig": "af9abf31a671d7ac9e77f635ec88a786cd8e13a2ed4a6ca1e2b4674ef09c7bf2"
+      },
+      "right": {
+        "case_id": "A2",
+        "expression": "(2 + 2) * 3",
+        "result": 12.0,
+        "psi_sig": "540b052dae9342acaa448cf40c10e5cfe44e8adcad02fb25e0b8a49cc8aa201a",
+        "ei_sig": "f69ea8aba244290070a6b3c9ebccc899f3e3f75316fe7d84a3e2e0ac7b49f98a"
+      },
+      "psi_diff": true,
+      "ei_diff": true,
+      "value_equal": false
+    },
+    "assoc_add_pair_b": {
+      "left": {
+        "case_id": "B1",
+        "expression": "(2 + 3) + 4",
+        "result": 9.0,
+        "psi_sig": "7312fcf176fa44902efe464d51e23b3a74b40ea865af15f82b2a64e30f662002",
+        "ei_sig": "09ff3b873baf6ce249c363a9fa58e5411673d44e88614d9e4a68621304199c25"
+      },
+      "right": {
+        "case_id": "B2",
+        "expression": "2 + (3 + 4)",
+        "result": 9.0,
+        "psi_sig": "bb0c8d2f19a462779b842b57c53eba5fe355cff7c193fa57ffd0ecf7f7dc9ec8",
+        "ei_sig": "c175ce8d2323c0668da2c2f0c12e975882d65426247ebb38ce1ede13bb61b741"
+      },
+      "psi_diff": true,
+      "ei_diff": true,
+      "value_equal": true
+    },
+    "assoc_mul_pair_c": {
+      "left": {
+        "case_id": "C1",
+        "expression": "(2 * 3) * 4",
+        "result": 24.0,
+        "psi_sig": "56254f920dd4cf7858839221084713793af45f2eb89a6355365fa8e34a456cce",
+        "ei_sig": "93cb8c5ec4cdaee885ce91d2fa7df1eff21366ceb2983a127a2f76805cce7dbe"
+      },
+      "right": {
+        "case_id": "C2",
+        "expression": "2 * (3 * 4)",
+        "result": 24.0,
+        "psi_sig": "070861ec47b67d8e1a2bf9b410f04fa89e6d73c7b45347fad5e81431a8c9f380",
+        "ei_sig": "dfe9ab48c630ec418af4a9ea49c20e50376b04d3e971844bfbbbe2b5a7eee4a6"
+      },
+      "psi_diff": true,
+      "ei_diff": true,
+      "value_equal": true
+    },
+    "distrib_pair_d": {
+      "left": {
+        "case_id": "D1",
+        "expression": "(1 + 2) * 3",
+        "result": 9.0,
+        "psi_sig": "75cab894d0e41fe51a82da6c6f7f4eb0e3d7f102c67ec2ee99aa713a63930fd7",
+        "ei_sig": "8afcd3df4a8f0c9a919b070cb659b269308b9ddfe54f96380a829006f0ba8cfd"
+      },
+      "right": {
+        "case_id": "D2",
+        "expression": "(1 * 3) + (2 * 3)",
+        "result": 9.0,
+        "psi_sig": "5cad8e8f1e0e3c853e26dab8a49cf81d1ed1c3229f7e8acbfe3ca17ae317ee1c",
+        "ei_sig": "b7b9db5dc4e9781e6405be6d0d2592d7ce8ac67cbe6565a2cbda259820558497"
+      },
+      "psi_diff": true,
+      "ei_diff": true,
+      "value_equal": true
+    }
+  },
+  "psi_encoder_note": "Provisional PSI hash over derivation_trace rule/op/base_phase/expression.",
+  "ei_encoder_note": "Provisional EI hash over result + final/cumulative theta + crystal_state."
+}
