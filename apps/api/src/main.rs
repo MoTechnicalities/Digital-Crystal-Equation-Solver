@@ -43,6 +43,7 @@ fn build_router(state: ApiState) -> Router {
         .route("/", get(index))
         .route("/labs/special-functions", get(special_functions_lab))
         .route("/labs/riemann-hypothesis", get(riemann_hypothesis_lab))
+        .route("/labs/research-findings", get(research_findings_lab))
         .route("/health", get(health))
         .route("/v1/config", get(get_config))
         .route("/v1/platform/modules", get(get_platform_modules))
@@ -61,6 +62,10 @@ async fn special_functions_lab(State(_state): State<ApiState>) -> Html<String> {
 }
 async fn riemann_hypothesis_lab(State(_state): State<ApiState>) -> Html<String> {
     Html(render_riemann_hypothesis_lab())
+}
+
+async fn research_findings_lab(State(_state): State<ApiState>) -> Html<String> {
+    Html(render_research_findings_lab())
 }
 
 fn config_path_from_args() -> String {
@@ -1224,6 +1229,8 @@ fn render_riemann_hypothesis_lab() -> String {
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .panel { padding: 18px; }
         h2 { margin: 0 0 10px; font-size: 1.1rem; }
+        .problem { margin-top: 14px; border: 1px solid rgba(11,111,95,0.2); border-radius: 16px; padding: 14px 16px; background: rgba(11,111,95,0.06); }
+        .problem p { margin: 8px 0; color: #2f4a53; line-height: 1.56; }
         ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
         li { margin-bottom: 6px; }
         .mono { font-family: var(--mono); font-size: 0.93rem; color: #31434d; }
@@ -1252,9 +1259,15 @@ fn render_riemann_hypothesis_lab() -> String {
             <p class=\"eyebrow\">Research Lab</p>
             <h1>Riemann Hypothesis Research Lab</h1>
             <p class=\"lede\">This page is a dedicated workspace for hypothesis mapping, theorem-attempt structure, computational validation tracks, and reproducible artifact planning around RH-adjacent investigations.</p>
+            <section class=\"problem\">
+                <p><strong>Riemann Hypothesis statement:</strong> every non-trivial zero of the Riemann zeta function has real part <span class=\"mono\">Re(s) = 1/2</span>.</p>
+                <p><strong>Why it matters:</strong> this condition constrains deep behavior in prime distribution and links analysis, number theory, and spectral structure.</p>
+                <p><strong>Our method here:</strong> deterministic trace experiments, explicit witness catalogs, and theorem-check workflows grounded in geometric logic.</p>
+            </section>
             <div class=\"actions\">
                 <a class=\"button\" href=\"/\">Back to Landing Page</a>
                 <a class=\"button\" href=\"/labs/special-functions\">Open Special Functions Lab</a>
+                <a class=\"button\" href=\"/labs/research-findings\">Open Research Findings Hub</a>
             </div>
         </section>
 
@@ -1269,13 +1282,114 @@ fn render_riemann_hypothesis_lab() -> String {
                 </ul>
             </article>
             <article class=\"panel\">
-                <h2>Planned Artifacts</h2>
+                <h2>Findings Linked To This Lab</h2>
                 <ul>
-                    <li class=\"mono\">docs/findings/RH_RESEARCH_TRACK.md</li>
-                    <li class=\"mono\">docs/findings/artifacts/rh_equivalence_map.json</li>
-                    <li class=\"mono\">docs/findings/artifacts/rh_validation_runs.csv</li>
-                    <li class=\"mono\">scripts/rh_validation_harness.py</li>
+                    <li><a href=\"/labs/research-findings#logic-framework\">Logic-Geometry Invariants Framework</a></li>
+                    <li><a href=\"/labs/research-findings#witness-catalog\">Logic-Geometry Witness Catalog</a></li>
+                    <li><a href=\"/labs/research-findings#phase-atlas\">Phase-Transition Atlas and Threshold CIs</a></li>
+                    <li><a href=\"/labs/research-findings#asymmetry-isolation\">Asymmetry Isolation Protocol</a></li>
                 </ul>
+            </article>
+        </section>
+    </main>
+</body>
+</html>".to_string()
+}
+
+fn render_research_findings_lab() -> String {
+    "<!doctype html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"utf-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+    <title>Research Findings Hub</title>
+    <style>
+        :root {
+            --bg: #f4efe5;
+            --panel: rgba(255,255,255,0.88);
+            --ink: #1d272d;
+            --muted: #596870;
+            --line: rgba(29,39,45,0.13);
+            --accent: #0b6f5f;
+            --accent-soft: #d8efe8;
+            --mono: 'Courier New', monospace;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+            background:
+                radial-gradient(circle at top right, rgba(11,111,95,0.15), transparent 36%),
+                linear-gradient(180deg, #fbf9f4 0%, var(--bg) 100%);
+        }
+        main { max-width: 1100px; margin: 0 auto; padding: 30px 18px 48px; }
+        .hero, .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: 0 18px 42px rgba(29,39,45,0.08);
+            backdrop-filter: blur(10px);
+        }
+        .hero { padding: 24px; margin-bottom: 14px; }
+        .eyebrow { margin: 0 0 10px; color: var(--accent); font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+        h1 { margin: 0 0 8px; font-size: clamp(2rem, 4.8vw, 3.2rem); line-height: 0.96; }
+        .lede { margin: 0; max-width: 68ch; color: var(--muted); line-height: 1.58; }
+        .actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+        a.button {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: var(--accent-soft);
+            color: var(--ink);
+            font-family: var(--mono);
+            font-size: 0.88rem;
+        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+        .card { padding: 16px; }
+        h2 { margin: 0 0 8px; font-size: 1.12rem; }
+        p { margin: 0 0 8px; color: #344952; line-height: 1.56; }
+        .path { font-family: var(--mono); font-size: 0.86rem; color: #36505a; background: rgba(216,239,232,0.5); border: 1px solid rgba(11,111,95,0.2); border-radius: 10px; padding: 8px 10px; }
+        @media (max-width: 900px) { main { padding: 22px 14px 40px; } }
+    </style>
+</head>
+<body>
+    <main>
+        <section class=\"hero\">
+            <p class=\"eyebrow\">Research Findings</p>
+            <h1>Geometric Logic Findings Hub</h1>
+            <p class=\"lede\">This hub links the active findings that inform our Riemann-Hypothesis-oriented workflow: deterministic invariants, witness catalogs, phase transition maps, and asymmetry isolation experiments.</p>
+            <div class=\"actions\">
+                <a class=\"button\" href=\"/labs/riemann-hypothesis\">Back to RH Research Lab</a>
+                <a class=\"button\" href=\"/\">Back to Landing Page</a>
+            </div>
+        </section>
+
+        <section class=\"grid\">
+            <article class=\"card\" id=\"logic-framework\">
+                <h2>Logic-Geometry Invariants Framework</h2>
+                <p>Formalizes Path Signature Invariant (tree/order-sensitive) and Endpoint Invariant (value-sensitive), giving testable theorem candidates T1/T2/T3.</p>
+                <div class=\"path\">docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md</div>
+            </article>
+            <article class=\"card\" id=\"witness-catalog\">
+                <h2>Witness Catalog (First Experimental Pass)</h2>
+                <p>Machine-generated witness pairs showing deterministic PSI/EI behavior, including path-distinct/value-equal families aligned with the geometric-logic thesis.</p>
+                <div class=\"path\">docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md</div>
+                <div class=\"path\">docs/findings/artifacts/logic_geometry_witness_report.json</div>
+            </article>
+            <article class=\"card\" id=\"phase-atlas\">
+                <h2>Phase-Transition Atlas</h2>
+                <p>Maps stability regimes and estimates coherence cliff thresholds with confidence bands across dimensions.</p>
+                <div class=\"path\">docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md</div>
+                <div class=\"path\">docs/findings/artifacts/hafnian_flux_transition_thresholds.json</div>
+            </article>
+            <article class=\"card\" id=\"asymmetry-isolation\">
+                <h2>Asymmetry Isolation Protocol</h2>
+                <p>Separates symmetry-gap perturbations from coherence regimes to test causality claims in a controlled sweep.</p>
+                <div class=\"path\">docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md</div>
+                <div class=\"path\">docs/findings/artifacts/hafnian_flux_asymmetry_sweep_summary.json</div>
             </article>
         </section>
     </main>
@@ -1400,8 +1514,35 @@ mod tests {
             .expect("body should read");
         let html = String::from_utf8(body.to_vec()).expect("body should be utf-8");
         assert!(html.contains("Riemann Hypothesis Research Lab"));
-        assert!(html.contains("Equivalent-statement map"));
+        assert!(html.contains("Re(s) = 1/2"));
         assert!(html.contains("/labs/special-functions"));
+        assert!(html.contains("/labs/research-findings"));
+    }
+
+    #[tokio::test]
+    async fn research_findings_lab_page_is_served() {
+        let app = build_router(ApiState {
+            config: std::sync::Arc::new(AppConfig::default()),
+        });
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .uri("/labs/research-findings")
+                    .body(Body::empty())
+                    .expect("request should build"),
+            )
+            .await
+            .expect("request should succeed");
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body = to_bytes(response.into_body(), usize::MAX)
+            .await
+            .expect("body should read");
+        let html = String::from_utf8(body.to_vec()).expect("body should be utf-8");
+        assert!(html.contains("Geometric Logic Findings Hub"));
+        assert!(html.contains("LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE"));
+        assert!(html.contains("/labs/riemann-hypothesis"));
     }
 
     #[tokio::test]
