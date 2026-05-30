@@ -1,0 +1,66 @@
+{
+  "source_csv": "docs/findings/artifacts/hafnian_flux_transition_sweep.csv",
+  "bootstrap": {
+    "rounds": 2000,
+    "seed": 20260530
+  },
+  "residual_threshold": 0.1,
+  "dimensions": {
+    "4": {
+      "count": 60,
+      "coherence_min": 0.0517332198,
+      "coherence_max": 0.9997081479,
+      "residual_abs_mean": 0.16332442499166666,
+      "residual_abs_max": 1.9774845401,
+      "coherence_threshold_for_residual": {
+        "estimate": 0.8096647565577059,
+        "ci95_low": 0.7688926194750276,
+        "ci95_high": 0.8672140609198168,
+        "valid_bootstrap_samples": 2000
+      }
+    },
+    "6": {
+      "count": 60,
+      "coherence_min": 0.3889921392,
+      "coherence_max": 0.9994148719,
+      "residual_abs_mean": 0.17913798340166667,
+      "residual_abs_max": 3.0075601655,
+      "coherence_threshold_for_residual": {
+        "estimate": 0.8252356757966447,
+        "ci95_low": 0.7832077845058858,
+        "ci95_high": 0.8436891867995585,
+        "valid_bootstrap_samples": 2000
+      }
+    },
+    "8": {
+      "count": 60,
+      "coherence_min": 0.4684641369,
+      "coherence_max": 0.999318647,
+      "residual_abs_mean": 0.15083883864666667,
+      "residual_abs_max": 2.1440176074,
+      "coherence_threshold_for_residual": {
+        "estimate": 0.7897946604625639,
+        "ci95_low": 0.7016677147208934,
+        "ci95_high": 0.8839132126638949,
+        "valid_bootstrap_samples": 2000
+      }
+    },
+    "10": {
+      "count": 60,
+      "coherence_min": 0.4846070446,
+      "coherence_max": 0.9992730608,
+      "residual_abs_mean": 0.11391279479000001,
+      "residual_abs_max": 1.931654751,
+      "coherence_threshold_for_residual": {
+        "estimate": 0.7382908446756481,
+        "ci95_low": 0.6293742714331275,
+        "ci95_high": 0.7812652152706958,
+        "valid_bootstrap_samples": 2000
+      }
+    }
+  },
+  "notes": [
+    "Threshold is estimated where mean residual crosses the configured cutoff as coherence decreases.",
+    "CI bands are bootstrap percentile intervals from resampled rows per dimension."
+  ]
+}

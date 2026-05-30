@@ -12,6 +12,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Correlation and bootstrap confidence-interval follow-up on sweep results.
 - [HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md](HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md)
   - Separate asymmetry-only protocol focused on symmetry-gap causality isolation.
+- [HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md](HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md)
+  - Multi-dimension transition atlas with coherence-cliff thresholds and CI bands.
 
 ## Artifacts
 
@@ -24,3 +26,9 @@ Notable asymmetry isolation artifacts:
 - [artifacts/hafnian_flux_asymmetry_sweep.csv](artifacts/hafnian_flux_asymmetry_sweep.csv)
 - [artifacts/hafnian_flux_asymmetry_sweep_summary.json](artifacts/hafnian_flux_asymmetry_sweep_summary.json)
 - [artifacts/hafnian_flux_asymmetry_residual_vs_gap.svg](artifacts/hafnian_flux_asymmetry_residual_vs_gap.svg)
+
+Notable phase-transition artifacts:
+- [artifacts/hafnian_flux_transition_sweep.csv](artifacts/hafnian_flux_transition_sweep.csv)
+- [artifacts/hafnian_flux_transition_heatmap.svg](artifacts/hafnian_flux_transition_heatmap.svg)
+- [artifacts/hafnian_flux_transition_summary.json](artifacts/hafnian_flux_transition_summary.json)
+- [artifacts/hafnian_flux_transition_thresholds.json](artifacts/hafnian_flux_transition_thresholds.json)

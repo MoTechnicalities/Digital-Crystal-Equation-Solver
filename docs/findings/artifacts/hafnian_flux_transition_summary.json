@@ -1,0 +1,81 @@
+{
+  "seed": 20260530,
+  "dimensions": [
+    4,
+    6,
+    8,
+    10
+  ],
+  "phase_sigmas": [
+    0.05,
+    0.15,
+    0.3,
+    0.6,
+    1.1
+  ],
+  "asymmetry_levels": [
+    0.0,
+    0.15,
+    0.35,
+    0.55
+  ],
+  "samples_per_cell": 3,
+  "total_cases": 240,
+  "failure_count": 0,
+  "heatmap": {
+    "coherence_range": [
+      0.051733219803450435,
+      0.9997081479469307
+    ],
+    "symmetry_gap_range": [
+      0.0,
+      0.3977048927728403
+    ],
+    "residual_mean_range": [
+      0.0009125533839218214,
+      1.9774845401329504
+    ]
+  },
+  "dimension_summary": {
+    "4": {
+      "count": 60,
+      "residual_abs_mean": 0.1633244249903504,
+      "residual_abs_max": 1.9774845401329504,
+      "coherence_mean": 0.8738713733360954,
+      "coherence_min": 0.051733219803450435,
+      "coherence_max": 0.9997081479469307,
+      "symmetry_gap_mean": 0.1464078819403026,
+      "symmetry_gap_max": 0.3977048927728403
+    },
+    "6": {
+      "count": 60,
+      "residual_abs_mean": 0.17913798339949247,
+      "residual_abs_max": 3.0075601654599406,
+      "coherence_mean": 0.8669092384989247,
+      "coherence_min": 0.3889921391944731,
+      "coherence_max": 0.9994148718937669,
+      "symmetry_gap_mean": 0.14940480591281205,
+      "symmetry_gap_max": 0.3458719420255695
+    },
+    "8": {
+      "count": 60,
+      "residual_abs_mean": 0.1508388386460923,
+      "residual_abs_max": 2.1440176074143875,
+      "coherence_mean": 0.867380338735456,
+      "coherence_min": 0.4684641368950248,
+      "coherence_max": 0.9993186469618774,
+      "symmetry_gap_mean": 0.15002564076940436,
+      "symmetry_gap_max": 0.36620440479351674
+    },
+    "10": {
+      "count": 60,
+      "residual_abs_mean": 0.1139127947981528,
+      "residual_abs_max": 1.931654750994098,
+      "coherence_mean": 0.8720668908875396,
+      "coherence_min": 0.4846070445943093,
+      "coherence_max": 0.9992730608206561,
+      "symmetry_gap_mean": 0.15080715335635742,
+      "symmetry_gap_max": 0.36454749990268437
+    }
+  }
+}
