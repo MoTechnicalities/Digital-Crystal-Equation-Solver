@@ -123,9 +123,6 @@ Available starter routes:
 - `POST /v1/csif/math`
 - `POST /v1/rwif/validate`
 - `POST /v1/solve/linear`
-- `POST /v1/life-loop/tick`
-- `GET /v1/life-loop/state`
-- `GET /v1/life-loop/health`
 
 The current API now exposes the first platform shell for the multi-domain product direction:
 - a landing page served directly by the Rust API at `/`
@@ -133,14 +130,6 @@ The current API now exposes the first platform shell for the multi-domain produc
 - a typed module catalog at `/v1/platform/modules`
 - a first deterministic math endpoint at `/v1/csif/math`
 - foundation solver and RWIF endpoints that future domain packs will build on
-- a first Life Loop v0 boundary with goal updates, deterministic tick execution, persisted state, and health inspection
-
-Life Loop v0 notes:
-- `POST /v1/life-loop/tick` accepts goal upserts plus one observation and advances exactly one deterministic cycle
-- contradiction repeat guards trigger clarification actions instead of retrying failing signatures indefinitely
-- loop state is persisted via `runtime.life_loop_state_path`
-- loop history retention is bounded by `runtime.life_loop_history_limit`
-- issue-ready request/response examples live in [docs/LIFE_LOOP_API_EXAMPLES.md](docs/LIFE_LOOP_API_EXAMPLES.md)
 
 Current `POST /v1/csif/math` slice:
 - follows the predecessor request shape: `expression`, optional `mode`, optional `angle_unit`
@@ -166,18 +155,17 @@ Start here, in order:
 3. [specs/csif-guard/CSIF_V2_RUST_ENGINE_TRAITS.md](specs/csif-guard/CSIF_V2_RUST_ENGINE_TRAITS.md)
 4. [ROADMAP.md](ROADMAP.md)
 5. [docs/GITHUB_MILESTONES.md](docs/GITHUB_MILESTONES.md)
-6. [docs/LIFE_LOOP_API_EXAMPLES.md](docs/LIFE_LOOP_API_EXAMPLES.md)
-7. [docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md)
-8. [docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md)
-9. [docs/findings/README.md](docs/findings/README.md)
-10. [docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md)
-11. [docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md)
-12. [docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md](docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md)
-13. [docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md](docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md)
-14. [docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md](docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md)
-15. [docs/findings/RH_PROOF_PROGRAM_V0_1.md](docs/findings/RH_PROOF_PROGRAM_V0_1.md)
-16. [docs/findings/RH_THEOREM_CHAIN_V0_1.md](docs/findings/RH_THEOREM_CHAIN_V0_1.md)
-17. [docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md](docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md)
-18. [docs/findings/RH_LEMMA_REGISTRY_V0_1.md](docs/findings/RH_LEMMA_REGISTRY_V0_1.md)
-19. [docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md](docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md)
+6. [docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md)
+7. [docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md)
+8. [docs/findings/README.md](docs/findings/README.md)
+9. [docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md)
+10. [docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md)
+11. [docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md](docs/findings/HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md)
+12. [docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md](docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md)
+13. [docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md](docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md)
+14. [docs/findings/RH_PROOF_PROGRAM_V0_1.md](docs/findings/RH_PROOF_PROGRAM_V0_1.md)
+15. [docs/findings/RH_THEOREM_CHAIN_V0_1.md](docs/findings/RH_THEOREM_CHAIN_V0_1.md)
+16. [docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md](docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md)
+17. [docs/findings/RH_LEMMA_REGISTRY_V0_1.md](docs/findings/RH_LEMMA_REGISTRY_V0_1.md)
+18. [docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md](docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md)
 19. [docs/findings/RH_COMPLETE_PROOF.md](docs/findings/RH_COMPLETE_PROOF.md)

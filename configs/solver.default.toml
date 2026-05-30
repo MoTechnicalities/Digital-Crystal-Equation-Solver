@@ -9,8 +9,6 @@ quantization_step = 1
 bind_address = "0.0.0.0:8080"
 emit_route_audit = true
 deterministic_replay = true
-life_loop_state_path = "data/rwif/life_loop_state.json"
-life_loop_history_limit = 256
 
 [rwif]
 schema_version = "RWIF_V2"

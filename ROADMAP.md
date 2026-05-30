@@ -59,12 +59,6 @@ Exit criteria:
 - identical input and config produce byte-stable outputs
 - replay reproduces the same route decisions
 
-Milestone 3.3 (Life Loop v0):
-- add deterministic life-loop state models (goals, episodes, adaptation counters)
-- implement tick scheduler with repeat-failure guard and auditable outcomes
-- persist life-loop state to RWIF-adjacent JSON for restart-safe continuity
-- expose life-loop health scoring to nurture reliable, knowledgeable behavior
-
 ## Phase 4: Containerized Service
 
 Goal:
@@ -109,6 +103,6 @@ Exit criteria:
 
 ## Immediate Next Actions
 
-1. Add RWIF-backed conformance fixtures for Life Loop state snapshots and replay regression.
-2. Add controlled goal-nurture policies (confidence decay/recovery schedules) behind immutable config flags.
-3. Add milestone-level perf/health baselines for life-loop tick throughput and adaptation rate.
+1. Replace the placeholder engine types with real CSIF route and RWIF persistence models.
+2. Add the first conformance tests mapped directly to the copied spec documents.
+3. Add the first Docker runtime command that serves the API binary with immutable config.
