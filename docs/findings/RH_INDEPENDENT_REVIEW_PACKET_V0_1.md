@@ -33,19 +33,68 @@ cargo test -p digitalcrystal-api
 
 ## 4. Expected Outcomes (Current Baseline)
 
-- O1 through O5: `satisfied`.
-- O6: `open`.
+- O1 through O6: `satisfied`.
+- O7: `open` until external verification artifacts are completed and validated.
 - C6 checklist states:
   - `C6-SUB-01`: true
   - `C6-SUB-02`: true
   - `C6-SUB-03`: true
-  - `C6-SUB-04`: false
-  - `C6-SUB-05`: expected true after this packet linkage is merged
-  - `C6-SUB-06`: false
+  - `C6-SUB-04`: true
+  - `C6-SUB-05`: true
+  - `C6-SUB-06`: true
 
 ## 5. Review Assertions
 
 Independent reviewer should verify:
 - artifacts are reproducible from clean checkout;
-- no proof-completion claim is made while C6-SUB-04/C6-SUB-06 remain open;
+- no external-verification completion claim is made unless O7 artifacts are valid;
 - manuscript checklist state matches machine-reported state.
+
+## 6. Reviewer Handoff Checklist
+
+Provide reviewer with the following files at one fixed commit:
+
+- `docs/findings/RH_COMPLETE_PROOF.md`
+- `docs/findings/RH_THEOREM_CHAIN_V0_1.md`
+- `docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md`
+- `docs/findings/RH_LEMMA_REGISTRY_V0_1.md`
+- `docs/findings/artifacts/rh_proof_pipeline_status.json`
+- `docs/findings/artifacts/rh_independent_review_attestations.json`
+- `docs/findings/artifacts/rh_reproducibility_manifest.json`
+- `docs/findings/artifacts/rh_proof_version_lock.json`
+
+Handoff metadata to include in reviewer ticket/email:
+
+- repository commit SHA under review
+- reviewer environment identifier convention
+- required command sequence from Section 3
+- expected contradiction-audit hash from current status artifact
+
+## 7. Reviewer Return Protocol
+
+Reviewer must return all three artifacts with concrete values:
+
+1. Attestations artifact
+- file: `docs/findings/artifacts/rh_independent_review_attestations.json`
+- required: populated `reviewer_id`, `environment_id`, `outcome`, `signed_reference`
+- acceptance: at least one `outcome: supports`
+
+2. Reproducibility manifest
+- file: `docs/findings/artifacts/rh_reproducibility_manifest.json`
+- required: at least one `environment_origin: independent` run
+- acceptance: at least one such run marked `status: passed`
+
+3. Proof version lock
+- file: `docs/findings/artifacts/rh_proof_version_lock.json`
+- required: `proof_document`, `proof_commit`, `contradiction_audit_hash`, `locked_at`
+- acceptance: `contradiction_audit_hash` matches script-computed expected hash
+
+## 8. Acceptance Gate (O7)
+
+O7 is satisfied only when all conditions hold:
+
+- attestations artifact is valid and includes supporting independent outcome
+- reproducibility manifest includes independent passed run
+- proof version lock hash matches current contradiction-audit sections
+
+Otherwise `prize_ready` must remain `false`.
