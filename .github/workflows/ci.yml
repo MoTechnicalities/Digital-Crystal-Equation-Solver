@@ -14,3 +14,11 @@ jobs:
         run: cargo build --workspace
       - name: Test
         run: cargo test --workspace
+
+  life-loop-replay-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Deterministic replay snapshot gate
+        run: cargo test --package digitalcrystal-engine --test life_loop life_loop_tick_is_deterministic_from_replay_snapshot_fixture
