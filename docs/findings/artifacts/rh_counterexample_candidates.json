@@ -1,0 +1,48 @@
+{
+  "program": "RH Counterexample Attack Harness",
+  "version": "v0.1",
+  "api_url": "http://127.0.0.1:8080/v1/csif/math",
+  "search_space": {
+    "zero_heights": [
+      14.134725141,
+      21.022039639,
+      25.01085758,
+      30.424876126,
+      32.935061588
+    ],
+    "sigma_grid": [
+      0.35,
+      0.4,
+      0.45,
+      0.55,
+      0.6,
+      0.65
+    ],
+    "t_offsets": [
+      -0.1,
+      -0.05,
+      -0.02,
+      -0.01,
+      0.01,
+      0.02,
+      0.05,
+      0.1
+    ],
+    "candidate_eps": 0.001,
+    "validation_eps": 1e-06,
+    "probe_count": 240
+  },
+  "summary": {
+    "candidate_count": 0,
+    "validated_count": 0,
+    "failure_count": 0,
+    "minimum_probe_abs": {
+      "sigma": 0.55,
+      "t": 14.124725141,
+      "zeta_abs": 0.03945927233086306
+    }
+  },
+  "candidates": [],
+  "failures": [],
+  "scope_note": "Adversarial internal search only. Any candidate requires independent external verification."
+}

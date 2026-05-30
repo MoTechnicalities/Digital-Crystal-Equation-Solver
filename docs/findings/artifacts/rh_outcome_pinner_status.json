@@ -1,0 +1,35 @@
+{
+  "program": "RH Internal Outcome Pinner",
+  "version": "v0.1",
+  "pinned_outcome": "rh_likely_true_internal",
+  "confidence_band": "medium",
+  "geometric_logic_evidence": {
+    "t1_constraint_distinguishability_pass": true,
+    "t2_endpoint_stability_all_pass": true,
+    "t3_witness_count": 3,
+    "t3_witness_families": [
+      "assoc_add_pair_b",
+      "assoc_mul_pair_c",
+      "distrib_pair_d"
+    ],
+    "geometric_signal_score": 100,
+    "transition_threshold_artifact_present": true,
+    "rejected_lemmas": []
+  },
+  "counterexample_summary": {
+    "artifact_present": true,
+    "validated_off_critical_line": false,
+    "candidate_count": 0
+  },
+  "rationale": [
+    "Geometric theorem checks T1/T2 pass and T3 witnesses exist.",
+    "No rejected lemmas are currently active in the chain.",
+    "No validated off-critical-line candidate has been recorded."
+  ],
+  "falsification_hooks": [
+    "Any validated off-critical-line zero candidate flips outcome to counterexample_candidate_internal.",
+    "Any regression in T1/T2 stability or removal of all T3 witnesses downgrades to undecided_internal.",
+    "Any lemma moved to rejected in active chain downgrades confidence and may force undecided_internal."
+  ],
+  "scope_note": "Internal directional pinner only; this is not a formal theorem proof/disproof claim."
+}
