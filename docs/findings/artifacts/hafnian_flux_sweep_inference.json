@@ -1,0 +1,65 @@
+{
+  "source_csv": "docs/findings/artifacts/hafnian_flux_sweep.csv",
+  "total_records": 72,
+  "bootstrap": {
+    "rounds": 4000,
+    "seed": 20260529
+  },
+  "correlations": {
+    "pearson_residual_abs_vs_coherence": -0.8122137675088348,
+    "pearson_residual_abs_vs_symmetry_gap": -0.27745296428920063
+  },
+  "overall": {
+    "residual_abs": {
+      "mean": 0.41885547890833336,
+      "ci95_low": 0.23276102993368056,
+      "ci95_high": 0.6170345381466665
+    }
+  },
+  "families": {
+    "coherent": {
+      "count": 18,
+      "residual_abs": {
+        "mean": 0.0013120405611111111,
+        "ci95_low": 0.0007557405359722222,
+        "ci95_high": 0.001970820483888889
+      },
+      "coherence_mean": 0.9983042625,
+      "symmetry_gap_mean": 0.0
+    },
+    "partial_coherence": {
+      "count": 18,
+      "residual_abs": {
+        "mean": 0.04012759933333333,
+        "ci95_low": 0.02844555961597222,
+        "ci95_high": 0.05305348178458334
+      },
+      "coherence_mean": 0.9473515002388889,
+      "symmetry_gap_mean": 0.0
+    },
+    "low_coherence": {
+      "count": 18,
+      "residual_abs": {
+        "mean": 1.6229201244333333,
+        "ci95_low": 1.18878581288375,
+        "ci95_high": 2.047855035319861
+      },
+      "coherence_mean": 0.23537246979444446,
+      "symmetry_gap_mean": 0.0
+    },
+    "symmetry_perturbed": {
+      "count": 18,
+      "residual_abs": {
+        "mean": 0.011062151305555556,
+        "ci95_low": 0.008239114559305556,
+        "ci95_high": 0.013977942420694445
+      },
+      "coherence_mean": 0.9854690463555555,
+      "symmetry_gap_mean": 0.31684743807777777
+    }
+  },
+  "notes": [
+    "Correlation signs indicate direction only; no causal proof is claimed.",
+    "Bootstrap CIs are empirical intervals over this fixed-sweep dataset."
+  ]
+}

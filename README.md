@@ -158,3 +158,4 @@ Start here, in order:
 6. [docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_FINDING.md)
 7. [docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md)
 8. [docs/findings/README.md](docs/findings/README.md)
+9. [docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md)
