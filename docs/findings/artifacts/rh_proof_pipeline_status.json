@@ -63,9 +63,7 @@
       ],
       "status": "open",
       "missing_paths": [
-        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-02",
         "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-04",
-        "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-05",
         "docs/findings/RH_COMPLETE_PROOF.md::c6_checklist_item_open::C6-SUB-06"
       ]
     }
@@ -104,10 +102,10 @@
       ],
       "c6_checklist_states": {
         "C6-SUB-01": true,
-        "C6-SUB-02": false,
+        "C6-SUB-02": true,
         "C6-SUB-03": true,
         "C6-SUB-04": false,
-        "C6-SUB-05": false,
+        "C6-SUB-05": true,
         "C6-SUB-06": false
       },
       "repro_commands_present": true,

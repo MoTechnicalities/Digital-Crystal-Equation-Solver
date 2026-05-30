@@ -167,4 +167,5 @@ Start here, in order:
 15. [docs/findings/RH_THEOREM_CHAIN_V0_1.md](docs/findings/RH_THEOREM_CHAIN_V0_1.md)
 16. [docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md](docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md)
 17. [docs/findings/RH_LEMMA_REGISTRY_V0_1.md](docs/findings/RH_LEMMA_REGISTRY_V0_1.md)
-18. [docs/findings/RH_COMPLETE_PROOF.md](docs/findings/RH_COMPLETE_PROOF.md)
+18. [docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md](docs/findings/RH_INDEPENDENT_REVIEW_PACKET_V0_1.md)
+19. [docs/findings/RH_COMPLETE_PROOF.md](docs/findings/RH_COMPLETE_PROOF.md)

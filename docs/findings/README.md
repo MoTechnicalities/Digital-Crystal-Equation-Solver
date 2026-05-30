@@ -26,6 +26,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Assumption-aware RH equivalent-statement mapping layer for theorem-chain C4.
 - [RH_LEMMA_REGISTRY_V0_1.md](RH_LEMMA_REGISTRY_V0_1.md)
   - Lemma closure and contradiction-policy registry for theorem-chain C5.
+- [RH_INDEPENDENT_REVIEW_PACKET_V0_1.md](RH_INDEPENDENT_REVIEW_PACKET_V0_1.md)
+  - Independent replication and expected-outcome packet for C6 external review.
 - [RH_COMPLETE_PROOF.md](RH_COMPLETE_PROOF.md)
   - First structured external-review manuscript scaffold anchored to theorem-chain obligations.
 
