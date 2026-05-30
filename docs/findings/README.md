@@ -14,6 +14,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Separate asymmetry-only protocol focused on symmetry-gap causality isolation.
 - [HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md](HAFNIAN_FLUX_PHASE_TRANSITION_ATLAS_NOTE.md)
   - Multi-dimension transition atlas with coherence-cliff thresholds and CI bands.
+- [LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md](LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md)
+  - Formal definitions for Path Signature Invariant and Endpoint Invariant with theorem candidates.
 
 ## Artifacts
 
