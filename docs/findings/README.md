@@ -20,6 +20,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - First experimental witness catalog validating provisional PSI/EI checks (T1/T2/T3).
 - [RH_PROOF_PROGRAM_V0_1.md](RH_PROOF_PROGRAM_V0_1.md)
   - Prize-proof development program with obligation stages and artifact-driven status.
+- [RH_THEOREM_CHAIN_V0_1.md](RH_THEOREM_CHAIN_V0_1.md)
+  - RH-specific theorem-obligation chain scaffold from signature invariants to final manuscript.
 
 ## Artifacts
 

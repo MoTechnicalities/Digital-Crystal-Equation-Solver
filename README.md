@@ -164,3 +164,4 @@ Start here, in order:
 12. [docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md](docs/findings/LOGIC_GEOMETRY_INVARIANTS_FRAMEWORK.md)
 13. [docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md](docs/findings/LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md)
 14. [docs/findings/RH_PROOF_PROGRAM_V0_1.md](docs/findings/RH_PROOF_PROGRAM_V0_1.md)
+15. [docs/findings/RH_THEOREM_CHAIN_V0_1.md](docs/findings/RH_THEOREM_CHAIN_V0_1.md)
