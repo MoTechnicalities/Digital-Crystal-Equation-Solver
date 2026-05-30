@@ -18,6 +18,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Formal definitions for Path Signature Invariant and Endpoint Invariant with theorem candidates.
 - [LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md](LOGIC_GEOMETRY_WITNESS_CATALOG_NOTE.md)
   - First experimental witness catalog validating provisional PSI/EI checks (T1/T2/T3).
+- [RH_PROOF_PROGRAM_V0_1.md](RH_PROOF_PROGRAM_V0_1.md)
+  - Prize-proof development program with obligation stages and artifact-driven status.
 
 ## Artifacts
 
@@ -40,3 +42,6 @@ Notable phase-transition artifacts:
 Notable logic-geometry artifacts:
 - [artifacts/logic_geometry_witness_catalog.csv](artifacts/logic_geometry_witness_catalog.csv)
 - [artifacts/logic_geometry_witness_report.json](artifacts/logic_geometry_witness_report.json)
+
+Notable RH proof-program artifact:
+- [artifacts/rh_proof_pipeline_status.json](artifacts/rh_proof_pipeline_status.json)
