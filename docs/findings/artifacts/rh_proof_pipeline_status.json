@@ -2,9 +2,9 @@
   "program": "Riemann Hypothesis Prize Proof Pipeline",
   "summary": {
     "total_obligations": 6,
-    "satisfied": 6,
-    "open": 0,
-    "prize_ready": true
+    "satisfied": 5,
+    "open": 1,
+    "prize_ready": false
   },
   "obligations": [
     {
@@ -61,10 +61,41 @@
       "required_paths": [
         "docs/findings/RH_COMPLETE_PROOF.md"
       ],
-      "status": "satisfied",
-      "missing_paths": []
+      "status": "open",
+      "missing_paths": [
+        "docs/findings/RH_COMPLETE_PROOF.md::open_status_markers_present"
+      ]
     }
   ],
+  "gate_details": {
+    "O6-theorem-proof": {
+      "required_section_headers": [
+        "## 1. Claim and Verification Standard",
+        "## 2. Scope and Boundaries",
+        "## 3. Section Anchors from RH Theorem Chain Obligations",
+        "### 3.1 O-C1 / C1: Path and Endpoint Signature Determinism",
+        "### 3.2 O-C2 / C2: Constraint-Path Distinguishability",
+        "### 3.3 O-C3 / C3: Path-Endpoint Decoupling Witnesses",
+        "### 3.4 O-C4 / C4: RH Equivalent-Statement Mapping Layer",
+        "### 3.5 O-C5 / C5: Lemma Closure and Contradiction Elimination",
+        "### 3.6 O-C6 / C6: Final End-to-End Theorem Manuscript",
+        "## 4. Prize Readiness Assessment (Current)",
+        "## 5. Reproducibility and Audit Commands",
+        "## 6. External Review Checklist"
+      ],
+      "required_status_markers": [
+        "Status:\n- satisfied",
+        "Current assessment:\n- Not prize-ready."
+      ],
+      "forbidden_markers": [
+        "Current assessment:\n- Prize-ready.",
+        "Current assessment:\n- Completed proof."
+      ],
+      "repro_commands_present": true,
+      "review_checklist_present": true,
+      "no_open_status_markers": false
+    }
+  },
   "next_actions": [
     "Add conformance tests for theorem candidates T1/T2/T3.",
     "Produce RH-specific theorem chain with externally reviewable proof obligations.",

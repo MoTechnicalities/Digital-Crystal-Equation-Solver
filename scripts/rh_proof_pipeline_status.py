@@ -64,6 +64,90 @@ def explicit_signature_contract_ok() -> tuple[bool, list[str]]:
     return len(missing) == 0, missing
 
 
+def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
+    """Require manuscript quality markers, not just file existence, for O6."""
+    rel_path = "docs/findings/RH_COMPLETE_PROOF.md"
+    missing = []
+    details: dict[str, object] = {
+        "required_section_headers": [],
+        "required_status_markers": [],
+        "forbidden_markers": [],
+    }
+
+    if not exists(rel_path):
+        missing.append(rel_path)
+        return False, missing, details
+
+    text = read_text(rel_path)
+
+    required_headers = [
+        "## 1. Claim and Verification Standard",
+        "## 2. Scope and Boundaries",
+        "## 3. Section Anchors from RH Theorem Chain Obligations",
+        "### 3.1 O-C1 / C1: Path and Endpoint Signature Determinism",
+        "### 3.2 O-C2 / C2: Constraint-Path Distinguishability",
+        "### 3.3 O-C3 / C3: Path-Endpoint Decoupling Witnesses",
+        "### 3.4 O-C4 / C4: RH Equivalent-Statement Mapping Layer",
+        "### 3.5 O-C5 / C5: Lemma Closure and Contradiction Elimination",
+        "### 3.6 O-C6 / C6: Final End-to-End Theorem Manuscript",
+        "## 4. Prize Readiness Assessment (Current)",
+        "## 5. Reproducibility and Audit Commands",
+        "## 6. External Review Checklist",
+    ]
+    details["required_section_headers"] = required_headers
+
+    for header in required_headers:
+        if header not in text:
+            missing.append(f"{rel_path}::missing_header::{header}")
+
+    required_markers = [
+        "Status:\n- satisfied",
+        "Current assessment:\n- Not prize-ready.",
+    ]
+    details["required_status_markers"] = required_markers
+    for marker in required_markers:
+        if marker not in text:
+            missing.append(f"{rel_path}::missing_marker::{marker}")
+
+    forbidden_markers = [
+        "Current assessment:\n- Prize-ready.",
+        "Current assessment:\n- Completed proof.",
+    ]
+    details["forbidden_markers"] = forbidden_markers
+    for marker in forbidden_markers:
+        if marker in text:
+            missing.append(f"{rel_path}::forbidden_marker_present::{marker}")
+
+    has_repro_cmd = (
+        "/bin/python3 scripts/rh_proof_pipeline_status.py" in text
+        and "cargo test -p digitalcrystal-engine" in text
+        and "cargo test -p digitalcrystal-api" in text
+    )
+    details["repro_commands_present"] = has_repro_cmd
+    if not has_repro_cmd:
+        missing.append(f"{rel_path}::missing_repro_commands")
+
+    has_review_checklist = all(
+        phrase in text
+        for phrase in [
+            "Reviewer should confirm:",
+            "deterministic reproducibility",
+            "explicit separation between evidence infrastructure and formal proof steps",
+        ]
+    )
+    details["review_checklist_present"] = has_review_checklist
+    if not has_review_checklist:
+        missing.append(f"{rel_path}::missing_review_checklist")
+
+    # Strict O6 gate: the manuscript cannot be considered complete if any section is still open.
+    no_open_status_markers = "Status:\n- open." not in text
+    details["no_open_status_markers"] = no_open_status_markers
+    if not no_open_status_markers:
+        missing.append(f"{rel_path}::open_status_markers_present")
+
+    return len(missing) == 0, missing, details
+
+
 def main() -> None:
     obligations = [
         Obligation(
@@ -108,12 +192,18 @@ def main() -> None:
     ]
 
     checks = []
+    theorem_proof_check_details = {}
     for item in obligations:
         missing = [path for path in item.required_paths if not exists(path)]
         if item.id == "O5-explicit-signatures":
             explicit_ok, explicit_missing = explicit_signature_contract_ok()
             if not explicit_ok:
                 missing.extend(explicit_missing)
+        if item.id == "O6-theorem-proof":
+            theorem_ok, theorem_missing, theorem_details = theorem_proof_contract_check()
+            theorem_proof_check_details = theorem_details
+            if not theorem_ok:
+                missing.extend(theorem_missing)
         checks.append(
             {
                 "id": item.id,
@@ -136,6 +226,9 @@ def main() -> None:
             "prize_ready": len(open_items) == 0,
         },
         "obligations": checks,
+        "gate_details": {
+            "O6-theorem-proof": theorem_proof_check_details,
+        },
         "next_actions": [
             "Add conformance tests for theorem candidates T1/T2/T3.",
             "Produce RH-specific theorem chain with externally reviewable proof obligations.",
