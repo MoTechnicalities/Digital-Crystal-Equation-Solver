@@ -40,6 +40,24 @@ def load_json(rel_path: str) -> dict | None:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def looks_like_git_sha(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    return re.fullmatch(r"[0-9a-f]{7,40}", value) is not None
+
+
+def is_placeholder_value(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    normalized = value.strip().upper()
+    return (
+        "TEMPLATE" in normalized
+        or "YYYY-" in normalized
+        or "TODO" in normalized
+        or normalized == ""
+    )
+
+
 def explicit_signature_contract_ok() -> tuple[bool, list[str]]:
     missing = []
 
@@ -115,12 +133,18 @@ def contradiction_audit_expected_hash() -> tuple[str, list[str]]:
 def external_verification_contract_check() -> tuple[bool, list[str], dict]:
     """Require external evidence artifacts so prize readiness is never doc-only."""
     missing: list[str] = []
+    has_supporting_attestation = False
+    has_independent_passed_run = False
+    lock_matches_expected_hash = False
+    lock_has_non_template_commit = False
+
     details: dict[str, object] = {
         "required_artifacts": {
             "attestations": "docs/findings/artifacts/rh_independent_review_attestations.json",
             "repro_manifest": "docs/findings/artifacts/rh_reproducibility_manifest.json",
             "proof_version_lock": "docs/findings/artifacts/rh_proof_version_lock.json",
-        }
+        },
+        "required_schema_version": "RH_EXT_VERIFY_V2",
     }
 
     att_path = details["required_artifacts"]["attestations"]
@@ -132,6 +156,14 @@ def external_verification_contract_check() -> tuple[bool, list[str], dict]:
         missing.append(att_path)
         details["attestations_valid"] = False
     else:
+        details["attestations_schema_version"] = att.get("schema_version")
+        if att.get("schema_version") != "RH_EXT_VERIFY_V2":
+            missing.append(f"{att_path}::schema_version_mismatch")
+
+        contract = att.get("closure_contract")
+        if not isinstance(contract, dict):
+            missing.append(f"{att_path}::missing_closure_contract")
+
         attestations = att.get("attestations")
         if not isinstance(attestations, list) or not attestations:
             missing.append(f"{att_path}::attestations_missing_or_empty")
@@ -151,20 +183,45 @@ def external_verification_contract_check() -> tuple[bool, list[str], dict]:
                 if entry.get("outcome") not in {"supports", "rejects", "inconclusive"}:
                     valid_entries = False
                     missing.append(f"{att_path}::invalid_outcome::{index}")
+                for strict_field in ["reviewer_id", "environment_id", "signed_reference"]:
+                    if is_placeholder_value(entry.get(strict_field)):
+                        valid_entries = False
+                        missing.append(f"{att_path}::placeholder_value::{index}::{strict_field}")
+
             has_support = any(
                 isinstance(entry, dict) and entry.get("outcome") == "supports"
                 for entry in attestations
             )
+            has_supporting_attestation = has_support
             if not has_support:
                 valid_entries = False
                 missing.append(f"{att_path}::no_supporting_attestation")
+
+            supporting_reviewers = {
+                entry.get("reviewer_id")
+                for entry in attestations
+                if isinstance(entry, dict) and entry.get("outcome") == "supports"
+            }
+            if len(supporting_reviewers) < 1:
+                valid_entries = False
+                missing.append(f"{att_path}::supporting_reviewer_missing")
+
             details["attestations_valid"] = valid_entries
+            details["supporting_attestation_present"] = has_support
 
     repro = load_json(repro_path)
     if repro is None:
         missing.append(repro_path)
         details["repro_manifest_valid"] = False
     else:
+        details["repro_schema_version"] = repro.get("schema_version")
+        if repro.get("schema_version") != "RH_EXT_VERIFY_V2":
+            missing.append(f"{repro_path}::schema_version_mismatch")
+
+        contract = repro.get("closure_contract")
+        if not isinstance(contract, dict):
+            missing.append(f"{repro_path}::missing_closure_contract")
+
         runs = repro.get("runs")
         if not isinstance(runs, list) or not runs:
             missing.append(f"{repro_path}::runs_missing_or_empty")
@@ -175,11 +232,30 @@ def external_verification_contract_check() -> tuple[bool, list[str], dict]:
                 and run.get("environment_origin") == "independent"
                 and run.get("status") == "passed"
                 and run.get("run_id")
+                and not is_placeholder_value(run.get("run_id"))
                 for run in runs
             )
+            has_independent_passed_run = independent_pass
             details["repro_manifest_valid"] = independent_pass
             if not independent_pass:
                 missing.append(f"{repro_path}::no_independent_passed_run")
+
+            passed_runs_with_status_artifact = any(
+                isinstance(run, dict)
+                and run.get("environment_origin") == "independent"
+                and run.get("status") == "passed"
+                and isinstance(run.get("artifact_checks"), list)
+                and any(
+                    isinstance(check, dict)
+                    and check.get("path") == "docs/findings/artifacts/rh_proof_pipeline_status.json"
+                    and check.get("status") == "passed"
+                    for check in run.get("artifact_checks")
+                )
+                for run in runs
+            )
+            details["independent_pass_with_status_artifact_check"] = passed_runs_with_status_artifact
+            if not passed_runs_with_status_artifact:
+                missing.append(f"{repro_path}::missing_passed_status_artifact_check")
 
     expected_hash, hash_missing = contradiction_audit_expected_hash()
     details["expected_contradiction_audit_hash"] = expected_hash
@@ -191,6 +267,14 @@ def external_verification_contract_check() -> tuple[bool, list[str], dict]:
         missing.append(lock_path)
         details["proof_version_lock_valid"] = False
     else:
+        details["lock_schema_version"] = lock.get("schema_version")
+        if lock.get("schema_version") != "RH_EXT_VERIFY_V2":
+            missing.append(f"{lock_path}::schema_version_mismatch")
+
+        contract = lock.get("closure_contract")
+        if not isinstance(contract, dict):
+            missing.append(f"{lock_path}::missing_closure_contract")
+
         required_lock_fields = ["proof_document", "proof_commit", "contradiction_audit_hash", "locked_at"]
         lock_ok = True
         for field in required_lock_fields:
@@ -205,8 +289,37 @@ def external_verification_contract_check() -> tuple[bool, list[str], dict]:
         if lock.get("contradiction_audit_hash") != expected_hash:
             lock_ok = False
             missing.append(f"{lock_path}::contradiction_audit_hash_mismatch")
+        else:
+            lock_matches_expected_hash = True
+
+        if not looks_like_git_sha(lock.get("proof_commit")):
+            lock_ok = False
+            missing.append(f"{lock_path}::invalid_or_placeholder_proof_commit")
+        else:
+            lock_has_non_template_commit = True
 
         details["proof_version_lock_valid"] = lock_ok
+
+    details["o7_closure_checklist"] = [
+        {
+            "id": "O7-CHECK-01",
+            "criterion": "At least one non-placeholder independent supporting attestation is present.",
+            "satisfied": has_supporting_attestation,
+            "action_if_open": "Replace template attestation with a real independent reviewer record whose outcome is supports.",
+        },
+        {
+            "id": "O7-CHECK-02",
+            "criterion": "At least one independent reproducibility run has status passed with a passed proof-status artifact check.",
+            "satisfied": bool(has_independent_passed_run and details.get("independent_pass_with_status_artifact_check")),
+            "action_if_open": "Add a real independent run with status passed and artifact_checks entry for docs/findings/artifacts/rh_proof_pipeline_status.json marked passed.",
+        },
+        {
+            "id": "O7-CHECK-03",
+            "criterion": "Proof version lock has non-template commit SHA and matches the expected contradiction-audit hash.",
+            "satisfied": bool(lock_matches_expected_hash and lock_has_non_template_commit),
+            "action_if_open": "Set proof_commit to a real git SHA and set contradiction_audit_hash to the expected hash emitted by this script.",
+        },
+    ]
 
     return len(missing) == 0, missing, details
 
@@ -242,6 +355,7 @@ def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
         "## 4. Prize Readiness Assessment (Current)",
         "## 5. Reproducibility and Audit Commands",
         "## 6. External Review Checklist",
+        "## 12. Internal Outcome Pin Contract",
     ]
     details["required_section_headers"] = required_headers
 
@@ -313,6 +427,130 @@ def theorem_proof_contract_check() -> tuple[bool, list[str], dict]:
     return len(missing) == 0, missing, details
 
 
+def internal_outcome_pin_contract_check() -> tuple[bool, list[str], dict]:
+    rel_path = "docs/findings/artifacts/rh_outcome_pinner_status.json"
+    comparison_path = "docs/findings/artifacts/rh_outcome_branch_comparison.json"
+    dipole_path = "docs/findings/artifacts/rh_dipole_analysis.json"
+    manuscript_path = "docs/findings/RH_COMPLETE_PROOF.md"
+    missing: list[str] = []
+    details: dict[str, object] = {
+        "required_pinned_outcome": "rh_likely_true_internal",
+        "required_comparison_artifact": comparison_path,
+        "required_dipole_artifact": dipole_path,
+        "required_manuscript_section": "## 12. Internal Outcome Pin Contract",
+        "positive_pin_premises": {},
+        "negative_outcome_requirements": {},
+    }
+
+    payload = load_json(rel_path)
+    if payload is None:
+        missing.append(rel_path)
+        return False, missing, details
+
+    if payload.get("pinned_outcome") != "rh_likely_true_internal":
+        missing.append(f"{rel_path}::pinned_outcome_mismatch")
+
+    positive = (payload.get("proof_contracts") or {}).get("positive_pin_proof") or {}
+    negative = (payload.get("proof_contracts") or {}).get("negative_outcome_exclusion") or {}
+
+    positive_premises = positive.get("premises") or []
+    negative_requirements = negative.get("requirements_not_met") or []
+    details["positive_pin_premises"] = {
+        item.get("id", f"premise_{index}"): bool(item.get("holds"))
+        for index, item in enumerate(positive_premises)
+        if isinstance(item, dict)
+    }
+    details["negative_outcome_requirements"] = {
+        item.get("id", f"requirement_{index}"): bool(item.get("holds"))
+        for index, item in enumerate(negative_requirements)
+        if isinstance(item, dict)
+    }
+
+    if positive.get("conclusion_enabled") is not True:
+        missing.append(f"{rel_path}::positive_pin_proof_not_enabled")
+    if negative.get("exclusion_enabled") is not True:
+        missing.append(f"{rel_path}::negative_outcome_exclusion_not_enabled")
+
+    required_positive_ids = ["P-01", "P-02", "P-03", "P-04", "P-05", "P-06", "P-07"]
+    for item_id in required_positive_ids:
+        if details["positive_pin_premises"].get(item_id) is not True:
+            missing.append(f"{rel_path}::positive_premise_not_satisfied::{item_id}")
+
+    required_negative_ids = ["N-01", "N-02", "N-03", "N-04", "N-05"]
+    for item_id in required_negative_ids:
+        if details["negative_outcome_requirements"].get(item_id) is not True:
+            missing.append(f"{rel_path}::negative_requirement_not_satisfied::{item_id}")
+
+    dipole_summary = payload.get("dipole_summary") or {}
+    details["pinner_dipole_summary_present"] = bool(dipole_summary)
+    details["pinner_dipole_probe_count"] = int(dipole_summary.get("probe_count") or 0)
+    details["pinner_dipole_top_asymmetry_score"] = dipole_summary.get("top_asymmetry_score")
+    if not dipole_summary:
+        missing.append(f"{rel_path}::missing_dipole_summary")
+    elif not bool(dipole_summary.get("artifact_present")):
+        missing.append(f"{rel_path}::dipole_artifact_not_present")
+    elif int(dipole_summary.get("probe_count") or 0) <= 0:
+        missing.append(f"{rel_path}::dipole_probe_count_invalid")
+
+    dipole = load_json(dipole_path)
+    if dipole is None:
+        missing.append(dipole_path)
+    else:
+        details["dipole_program"] = dipole.get("program")
+        details["dipole_probe_count"] = int((dipole.get("sample_config") or {}).get("probe_count") or 0)
+        details["dipole_top_asymmetry_windows"] = len(dipole.get("top_asymmetry_windows") or [])
+        if dipole.get("program") != "RH Dipole Symmetry Analysis":
+            missing.append(f"{dipole_path}::program_mismatch")
+        if int((dipole.get("sample_config") or {}).get("probe_count") or 0) <= 0:
+            missing.append(f"{dipole_path}::probe_count_invalid")
+        if len(dipole.get("top_asymmetry_windows") or []) == 0:
+            missing.append(f"{dipole_path}::missing_top_asymmetry_windows")
+
+    comparison = load_json(comparison_path)
+    if comparison is None:
+        missing.append(comparison_path)
+    else:
+        selected_branch = comparison.get("selected_branch") or {}
+        excluded_branch = comparison.get("excluded_branch") or {}
+        contrast_summary = comparison.get("contrast_summary") or {}
+
+        details["comparison_selected_branch"] = selected_branch.get("branch")
+        details["comparison_excluded_branch"] = excluded_branch.get("branch")
+        details["comparison_has_decision_rule"] = bool(contrast_summary.get("decision_rule"))
+
+        if comparison.get("program") != "RH Outcome Branch Comparison":
+            missing.append(f"{comparison_path}::program_mismatch")
+        if selected_branch.get("branch") != "rh_likely_true_internal":
+            missing.append(f"{comparison_path}::selected_branch_mismatch")
+        if selected_branch.get("status") != "selected":
+            missing.append(f"{comparison_path}::selected_branch_status_mismatch")
+        if excluded_branch.get("branch") != "counterexample_candidate_internal":
+            missing.append(f"{comparison_path}::excluded_branch_mismatch")
+        if excluded_branch.get("status") != "excluded_for_now":
+            missing.append(f"{comparison_path}::excluded_branch_status_mismatch")
+        if not (selected_branch.get("why_this_cup") or []):
+            missing.append(f"{comparison_path}::missing_selected_branch_rationale")
+        if not (excluded_branch.get("why_not_the_other_cup") or []):
+            missing.append(f"{comparison_path}::missing_excluded_branch_rationale")
+        if not contrast_summary.get("selected_branch_conclusion"):
+            missing.append(f"{comparison_path}::missing_selected_branch_conclusion")
+        if not contrast_summary.get("excluded_branch_conclusion"):
+            missing.append(f"{comparison_path}::missing_excluded_branch_conclusion")
+        if not contrast_summary.get("decision_rule"):
+            missing.append(f"{comparison_path}::missing_decision_rule")
+
+    if not exists(manuscript_path):
+        missing.append(manuscript_path)
+    else:
+        manuscript = read_text(manuscript_path)
+        section = "## 12. Internal Outcome Pin Contract"
+        details["manuscript_section_present"] = section in manuscript
+        if section not in manuscript:
+            missing.append(f"{manuscript_path}::missing_section::{section}")
+
+    return len(missing) == 0, missing, details
+
+
 def main() -> None:
     obligations = [
         Obligation(
@@ -355,6 +593,16 @@ def main() -> None:
             required_paths=("docs/findings/RH_COMPLETE_PROOF.md",),
         ),
         Obligation(
+            id="O6b-outcome-pin-contract",
+            description="The internal outcome pinner states and satisfies both the positive pin contract and the counterexample-branch exclusion contract, with a reviewer-facing branch-comparison artifact.",
+            required_paths=(
+                "docs/findings/artifacts/rh_outcome_pinner_status.json",
+                "docs/findings/artifacts/rh_outcome_branch_comparison.json",
+                "docs/findings/artifacts/rh_dipole_analysis.json",
+                "docs/findings/RH_COMPLETE_PROOF.md",
+            ),
+        ),
+        Obligation(
             id="O7-external-verification",
             description="Independent external verification artifacts exist and are consistent with contradiction-audit version lock.",
             required_paths=(
@@ -367,6 +615,7 @@ def main() -> None:
 
     checks = []
     theorem_proof_check_details = {}
+    outcome_pin_contract_details = {}
     external_verification_details = {}
     for item in obligations:
         missing = [path for path in item.required_paths if not exists(path)]
@@ -384,6 +633,11 @@ def main() -> None:
             external_verification_details = external_details
             if not external_ok:
                 missing.extend(external_missing)
+        if item.id == "O6b-outcome-pin-contract":
+            outcome_ok, outcome_missing, outcome_details = internal_outcome_pin_contract_check()
+            outcome_pin_contract_details = outcome_details
+            if not outcome_ok:
+                missing.extend(outcome_missing)
         # Keep status output readable by collapsing duplicate diagnostics.
         missing = list(dict.fromkeys(missing))
         checks.append(
@@ -399,6 +653,26 @@ def main() -> None:
     satisfied = [c for c in checks if c["status"] == "satisfied"]
     open_items = [c for c in checks if c["status"] != "satisfied"]
 
+    next_actions = [
+        "Preserve the positive-pin sufficiency premises and the counterexample-branch exclusion contract.",
+    ]
+    o7_checklist = external_verification_details.get("o7_closure_checklist")
+    if isinstance(o7_checklist, list):
+        for item in o7_checklist:
+            if isinstance(item, dict) and item.get("satisfied") is not True and item.get("action_if_open"):
+                next_actions.append(str(item.get("action_if_open")))
+
+    if len(next_actions) == 1:
+        next_actions.extend(
+            [
+                "Collect independent signed review attestations artifact.",
+                "Record at least one passed reproducibility run from an independent environment.",
+                "Lock theorem-proof artifact version with matching contradiction-audit hash.",
+            ]
+        )
+
+    next_actions = list(dict.fromkeys(next_actions))
+
     status = {
         "program": "Riemann Hypothesis Prize Proof Pipeline",
         "summary": {
@@ -410,13 +684,10 @@ def main() -> None:
         "obligations": checks,
         "gate_details": {
             "O6-theorem-proof": theorem_proof_check_details,
+            "O6b-outcome-pin-contract": outcome_pin_contract_details,
             "O7-external-verification": external_verification_details,
         },
-        "next_actions": [
-            "Collect independent signed review attestations artifact.",
-            "Record at least one passed reproducibility run from an independent environment.",
-            "Lock theorem-proof artifact version with matching contradiction-audit hash.",
-        ],
+        "next_actions": next_actions,
     }
 
     ART.mkdir(parents=True, exist_ok=True)

@@ -1,54 +1,20 @@
 {
-  "program": "RH Internal Outcome Pinner",
+  "program": "RH Outcome Branch Comparison",
   "version": "v0.1",
-  "pinned_outcome": "rh_likely_true_internal",
-  "confidence_band": "medium",
-  "geometric_logic_evidence": {
-    "t1_constraint_distinguishability_pass": true,
-    "t2_endpoint_stability_all_pass": true,
-    "t3_witness_count": 3,
-    "t3_witness_families": [
-      "assoc_add_pair_b",
-      "assoc_mul_pair_c",
-      "distrib_pair_d"
-    ],
+  "reviewer_note": "Reviewer-facing comparison of the selected internal branch versus the currently excluded opposing branch.",
+  "question": "Which branch is currently justified by the committed evidence, and which branch is currently excluded?",
+  "selected_branch": {
+    "branch": "rh_likely_true_internal",
+    "status": "selected",
+    "confidence_band": "medium",
     "geometric_signal_score": 100,
-    "transition_threshold_artifact_present": true,
-    "rejected_lemmas": []
-  },
-  "counterexample_summary": {
-    "artifact_present": true,
-    "validated_off_critical_line": false,
-    "candidate_count": 0
-  },
-  "counterexample_refine_summary": {
-    "artifact_present": true,
-    "candidate_count": 0,
-    "validated_count": 0,
-    "best_refined_abs": 0.0023517060212223844,
-    "best_refined_off_critical_line": true
-  },
-  "counterexample_stability_summary": {
-    "artifact_present": true,
-    "points_analyzed": 6,
-    "stable_points": 0,
-    "unstable_points": 6
-  },
-  "dipole_summary": {
-    "artifact_present": true,
-    "probe_count": 25,
-    "top_window_count": 10,
-    "top_asymmetry_score": 0.19487104055925458,
-    "min_center_abs": 0.0014894643524299602
-  },
-  "rationale": [
-    "Geometric theorem checks T1/T2 pass and T3 witnesses exist.",
-    "No rejected lemmas are currently active in the chain.",
-    "No validated off-critical-line candidate has been recorded.",
-    "Dipole stress windows are present but none certifies an off-critical zero witness."
-  ],
-  "proof_contracts": {
-    "positive_pin_proof": {
+    "why_this_cup": [
+      "Geometric theorem checks T1/T2 pass and T3 witnesses exist.",
+      "No rejected lemmas are currently active in the chain.",
+      "No validated off-critical-line candidate has been recorded.",
+      "Dipole stress windows are present but none certifies an off-critical zero witness."
+    ],
+    "contract": {
       "target_outcome": "rh_likely_true_internal",
       "proof_type": "sufficiency_contract",
       "premises": [
@@ -90,8 +56,19 @@
       ],
       "conclusion_enabled": true,
       "conclusion": "Current internal evidence is sufficient to pin RH to the likely-true branch."
-    },
-    "negative_outcome_exclusion": {
+    }
+  },
+  "excluded_branch": {
+    "branch": "counterexample_candidate_internal",
+    "status": "excluded_for_now",
+    "why_not_the_other_cup": [
+      "The counterexample branch requires at least one validated off-critical-line zero candidate.",
+      "The coarse counterexample search reports zero candidates.",
+      "The adaptive refine search reports zero candidates and zero validated points.",
+      "Refined near-miss points do not remain stable across all tested neighborhood scales.",
+      "Dipole stress windows are present but do not produce a certified off-critical zero witness."
+    ],
+    "contract": {
       "excluded_outcome": "counterexample_candidate_internal",
       "proof_type": "current_exclusion_contract",
       "requirements_not_met": [
@@ -125,10 +102,17 @@
       "conclusion": "The current artifact set does not justify pinning the counterexample branch."
     }
   },
-  "falsification_hooks": [
-    "Any validated off-critical-line zero candidate flips outcome to counterexample_candidate_internal.",
-    "Any regression in T1/T2 stability or removal of all T3 witnesses downgrades to undecided_internal.",
-    "Any lemma moved to rejected in active chain downgrades confidence and may force undecided_internal."
-  ],
-  "scope_note": "Internal directional pinner only; this is not a formal theorem proof/disproof claim."
+  "contrast_summary": {
+    "selected_branch_conclusion": "Current internal evidence is sufficient to pin RH to the likely-true branch.",
+    "excluded_branch_conclusion": "The current artifact set does not justify pinning the counterexample branch.",
+    "decision_rule": "Select the RH-likely branch only when all positive premises hold and the counterexample branch lacks a validated off-critical-line witness."
+  },
+  "dipole_context": {
+    "artifact_present": true,
+    "probe_count": 25,
+    "top_window_count": 10,
+    "top_asymmetry_score": 0.19487104055925458,
+    "min_center_abs": 0.0014894643524299602
+  },
+  "scope_note": "Comparison artifact only; this is an internal evidence contrast, not an external proof claim."
 }
