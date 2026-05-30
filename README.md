@@ -159,3 +159,4 @@ Start here, in order:
 7. [docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md](docs/findings/HAFNIAN_FLUX_PROBE_SWEEP_FINDING.md)
 8. [docs/findings/README.md](docs/findings/README.md)
 9. [docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md)
+10. [docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md](docs/findings/HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md)

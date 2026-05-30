@@ -1,0 +1,62 @@
+{
+  "seed": 20260529,
+  "dimension": 6,
+  "cases_per_level": 16,
+  "levels": [
+    0.0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7
+  ],
+  "total_cases": 96,
+  "correlations": {
+    "pearson_residual_abs_vs_symmetry_gap": -0.0656056736327947,
+    "pearson_residual_abs_vs_coherence": -0.30893787379324
+  },
+  "levels_summary": {
+    "0.00": {
+      "count": 16,
+      "residual_abs_mean": 0.0018601501482977123,
+      "residual_abs_max": 0.00665817614553621,
+      "symmetry_gap_mean": 0.0,
+      "coherence_mean": 0.9969653263787376
+    },
+    "0.10": {
+      "count": 16,
+      "residual_abs_mean": 0.0024049375716202193,
+      "residual_abs_max": 0.006194830142198793,
+      "symmetry_gap_mean": 0.05562110272762567,
+      "coherence_mean": 0.9972446878931976
+    },
+    "0.20": {
+      "count": 16,
+      "residual_abs_mean": 0.0023640207784025313,
+      "residual_abs_max": 0.003924427621833981,
+      "symmetry_gap_mean": 0.11430648315005666,
+      "coherence_mean": 0.9971240340575321
+    },
+    "0.35": {
+      "count": 16,
+      "residual_abs_mean": 0.0023210398525992104,
+      "residual_abs_max": 0.008569887258481401,
+      "symmetry_gap_mean": 0.19935135000110438,
+      "coherence_mean": 0.9971049580214648
+    },
+    "0.50": {
+      "count": 16,
+      "residual_abs_mean": 0.0016394867109911782,
+      "residual_abs_max": 0.00460383198227321,
+      "symmetry_gap_mean": 0.29254416401685934,
+      "coherence_mean": 0.9974807182058643
+    },
+    "0.70": {
+      "count": 16,
+      "residual_abs_mean": 0.0018626252555917489,
+      "residual_abs_max": 0.004093449379890757,
+      "symmetry_gap_mean": 0.41610975342521717,
+      "coherence_mean": 0.9970662950400742
+    }
+  }
+}

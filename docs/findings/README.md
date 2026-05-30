@@ -10,6 +10,8 @@ This directory stores reproducible experimental findings generated from the Digi
   - Controlled family sweep with CSV + SVG artifacts.
 - [HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md](HAFNIAN_FLUX_PROBE_INFERENCE_NOTE.md)
   - Correlation and bootstrap confidence-interval follow-up on sweep results.
+- [HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md](HAFNIAN_FLUX_PROBE_ASYMMETRY_ISOLATION_NOTE.md)
+  - Separate asymmetry-only protocol focused on symmetry-gap causality isolation.
 
 ## Artifacts
 
@@ -17,3 +19,8 @@ Generated artifacts are stored in [artifacts/](artifacts/) and are intended to b
 
 Notable inference artifact:
 - [artifacts/hafnian_flux_sweep_inference.json](artifacts/hafnian_flux_sweep_inference.json)
+
+Notable asymmetry isolation artifacts:
+- [artifacts/hafnian_flux_asymmetry_sweep.csv](artifacts/hafnian_flux_asymmetry_sweep.csv)
+- [artifacts/hafnian_flux_asymmetry_sweep_summary.json](artifacts/hafnian_flux_asymmetry_sweep_summary.json)
+- [artifacts/hafnian_flux_asymmetry_residual_vs_gap.svg](artifacts/hafnian_flux_asymmetry_residual_vs_gap.svg)
