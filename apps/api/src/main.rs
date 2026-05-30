@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{path::Path, sync::{Arc, Mutex}};
 
 use axum::{
     Json, Router,
@@ -8,10 +8,12 @@ use axum::{
     routing::{get, post},
 };
 use digitalcrystal_engine::{
-    AppConfig, BankRecord, CrystalRecord, PlatformCatalog, SolverRequest, SolverResponse,
+    AppConfig, BankRecord, CrystalRecord, KnowledgeHealthReport, LifeLoopState, LifeLoopTickRequest,
+    LifeLoopTickResponse, PlatformCatalog, SolverRequest, SolverResponse,
     build_math_error_bridge_audit, classify_math_error, evaluate_math_expression, migrate_bank_to_v2,
-    migrate_crystal_to_v2, parse_angle_unit, parse_math_mode, platform_catalog,
-    solve_linear_equation, validate_bank, validate_crystal,
+    migrate_crystal_to_v2, parse_angle_unit, parse_math_mode, platform_catalog, life_loop_health,
+    load_life_loop_state, save_life_loop_state, solve_linear_equation, tick_life_loop, validate_bank,
+    validate_crystal,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -19,6 +21,9 @@ use serde_json::Value;
 #[derive(Clone)]
 struct ApiState {
     config: Arc<AppConfig>,
+    life_loop: Arc<Mutex<LifeLoopState>>,
+    life_loop_state_path: Arc<String>,
+    life_loop_history_limit: usize,
 }
 
 #[tokio::main]
@@ -26,8 +31,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config_path = config_path_from_args();
     let config = AppConfig::load_from_path(&config_path)?;
     let bind_address = config.runtime.bind_address.clone();
+    let life_loop_state_path = config.runtime.life_loop_state_path.clone();
+    let life_loop_history_limit = config.runtime.life_loop_history_limit;
+    let life_loop_state = load_life_loop_state(Path::new(&life_loop_state_path))?;
     let state = ApiState {
         config: Arc::new(config),
+        life_loop: Arc::new(Mutex::new(life_loop_state)),
+        life_loop_state_path: Arc::new(life_loop_state_path),
+        life_loop_history_limit,
     };
 
     let listener = tokio::net::TcpListener::bind(&bind_address).await?;
@@ -50,6 +61,9 @@ fn build_router(state: ApiState) -> Router {
         .route("/v1/csif/math", post(csif_math))
         .route("/v1/rwif/validate", post(validate_rwif))
         .route("/v1/solve/linear", post(solve_linear))
+        .route("/v1/life-loop/tick", post(life_loop_tick))
+        .route("/v1/life-loop/state", get(life_loop_state))
+        .route("/v1/life-loop/health", get(life_loop_health_endpoint))
         .with_state(state)
 }
 
@@ -182,6 +196,39 @@ async fn solve_linear(
         },
         &state.config.solver,
     ))
+}
+
+async fn life_loop_tick(
+    State(state): State<ApiState>,
+    Json(request): Json<LifeLoopTickRequest>,
+) -> axum::response::Response {
+    let mut guard = state.life_loop.lock().expect("life loop mutex poisoned");
+    let response: LifeLoopTickResponse = tick_life_loop(
+        &mut guard,
+        &request,
+        &state.config.solver,
+        state.life_loop_history_limit,
+    );
+
+    if let Err(error) = save_life_loop_state(Path::new(state.life_loop_state_path.as_str()), &guard) {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json_error("LIFE_LOOP_STATE_PERSIST_FAILED", &error.to_string())),
+        )
+            .into_response();
+    }
+
+    (StatusCode::OK, Json(response)).into_response()
+}
+
+async fn life_loop_state(State(state): State<ApiState>) -> Json<LifeLoopState> {
+    let guard = state.life_loop.lock().expect("life loop mutex poisoned");
+    Json((*guard).clone())
+}
+
+async fn life_loop_health_endpoint(State(state): State<ApiState>) -> Json<KnowledgeHealthReport> {
+    let guard = state.life_loop.lock().expect("life loop mutex poisoned");
+    Json(life_loop_health(&guard))
 }
 
 #[derive(Debug, Serialize)]
@@ -1413,20 +1460,30 @@ fn render_research_findings_lab() -> String {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use std::sync::{Arc, Mutex};
 
     use super::{ApiState, build_router};
     use axum::{
         body::{Body, to_bytes},
         http::{Request, StatusCode},
     };
-    use digitalcrystal_engine::{AppConfig, RWIF_EVENT_SCHEMA_VERSION, RWIF_SCHEMA_VERSION};
+    use digitalcrystal_engine::{
+        AppConfig, LifeLoopState, RWIF_EVENT_SCHEMA_VERSION, RWIF_SCHEMA_VERSION,
+    };
     use serde_json::{Value, json};
     use tower::util::ServiceExt;
 
+    fn test_api_state() -> ApiState {
+        ApiState {
+            config: Arc::new(AppConfig::default()),
+            life_loop: Arc::new(Mutex::new(LifeLoopState::default())),
+            life_loop_state_path: Arc::new("/tmp/digitalcrystal-life-loop-test.json".to_string()),
+            life_loop_history_limit: 128,
+        }
+    }
+
     async fn eval_math_payload(expression: &str) -> Value {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1454,9 +1511,7 @@ mod tests {
 
     #[tokio::test]
     async fn health_returns_runtime_status() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1478,9 +1533,7 @@ mod tests {
 
     #[tokio::test]
     async fn index_returns_platform_landing_page() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1507,9 +1560,7 @@ mod tests {
 
     #[tokio::test]
     async fn special_functions_lab_page_is_served() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1538,9 +1589,7 @@ mod tests {
 
     #[tokio::test]
     async fn riemann_hypothesis_lab_page_is_served() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1567,9 +1616,7 @@ mod tests {
 
     #[tokio::test]
     async fn research_findings_lab_page_is_served() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1595,9 +1642,7 @@ mod tests {
 
     #[tokio::test]
     async fn platform_modules_endpoint_returns_catalog() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1624,9 +1669,7 @@ mod tests {
 
     #[tokio::test]
     async fn csif_math_returns_deterministic_math_payload() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1717,9 +1760,7 @@ mod tests {
 
     #[tokio::test]
     async fn csif_math_rejects_invalid_mode() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1756,9 +1797,7 @@ mod tests {
 
     #[tokio::test]
     async fn csif_math_supports_complex_results() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1791,9 +1830,7 @@ mod tests {
 
     #[tokio::test]
     async fn rwif_validate_migrates_v1_fixture() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
         let fixture: Value = serde_json::from_str(include_str!(
             "../../../tests/conformance/rwif_v2/fixtures/RWIF-C-001-v1-bank.json"
         ))
@@ -1851,9 +1888,7 @@ mod tests {
 
     #[tokio::test]
     async fn rwif_validate_reports_missing_integer_wrap_mode() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
         let fixture: Value = serde_json::from_str(include_str!(
             "../../../tests/conformance/rwif_v2/fixtures/RWIF-C-002-v2-invalid-missing-integer-wrap.json"
         ))
@@ -1892,9 +1927,7 @@ mod tests {
 
     #[tokio::test]
     async fn linear_solver_endpoint_returns_route_audit() {
-        let app = build_router(ApiState {
-            config: std::sync::Arc::new(AppConfig::default()),
-        });
+        let app = build_router(test_api_state());
 
         let response = app
             .oneshot(
@@ -1929,5 +1962,74 @@ mod tests {
             .and_then(Value::as_array)
             .map(|items| !items.is_empty())
             .unwrap_or(false));
+    }
+
+    #[tokio::test]
+    async fn life_loop_tick_endpoint_returns_health_and_identity() {
+        let state_path = "/tmp/digitalcrystal-life-loop-test-tick.json";
+        let _ = std::fs::remove_file(state_path);
+        let app = build_router(ApiState {
+            config: Arc::new(AppConfig::default()),
+            life_loop: Arc::new(Mutex::new(LifeLoopState::default())),
+            life_loop_state_path: Arc::new(state_path.to_string()),
+            life_loop_history_limit: 128,
+        });
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/v1/life-loop/tick")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        serde_json::to_vec(&json!({
+                            "goal_updates": [
+                                {
+                                    "goal_id": "goal-test",
+                                    "description": "Solve test equation",
+                                    "priority": 90,
+                                    "confidence": 0.7
+                                }
+                            ],
+                            "observation": {
+                                "kind": "linear_equation",
+                                "variable": "x",
+                                "a": 2.0,
+                                "b": -4.0,
+                                "timestamp_ms": 42
+                            },
+                            "simulate_only": false,
+                            "timestamp_ms": 42
+                        }))
+                        .expect("request should serialize"),
+                    ))
+                    .expect("request should build"),
+            )
+            .await
+            .expect("request should succeed");
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body = to_bytes(response.into_body(), usize::MAX)
+            .await
+            .expect("body should read");
+        let payload: Value = serde_json::from_slice(&body).expect("json payload should parse");
+
+        assert!(payload.get("health").is_some());
+        assert!(payload.get("identity").is_some());
+        assert_eq!(
+            payload
+                .get("action")
+                .and_then(|value| value.get("kind"))
+                .and_then(Value::as_str),
+            Some("solve_linear")
+        );
+        assert_eq!(
+            payload
+                .get("solver_response")
+                .and_then(|value| value.get("solved_value")),
+            Some(&json!(2.0))
+        );
+        assert!(std::path::Path::new(state_path).exists());
+        let _ = std::fs::remove_file(state_path);
     }
 }

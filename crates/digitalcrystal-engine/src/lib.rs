@@ -9,6 +9,9 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 use thiserror::Error;
 
+mod life_loop;
+pub use life_loop::*;
+
 pub const DEFAULT_WRAP_MODE: &str = "principal_pi";
 pub const DEFAULT_ENGINE_MODE: &str = "signed_i8_plus_intent_v2";
 pub const RWIF_SCHEMA_VERSION: &str = "RWIF_V2";
@@ -399,6 +402,10 @@ pub struct RuntimeConfig {
     pub emit_route_audit: bool,
     #[serde(default = "default_true")]
     pub deterministic_replay: bool,
+    #[serde(default = "default_life_loop_state_path")]
+    pub life_loop_state_path: String,
+    #[serde(default = "default_life_loop_history_limit")]
+    pub life_loop_history_limit: usize,
 }
 
 impl Default for RuntimeConfig {
@@ -407,6 +414,8 @@ impl Default for RuntimeConfig {
             bind_address: default_bind_address(),
             emit_route_audit: true,
             deterministic_replay: true,
+            life_loop_state_path: default_life_loop_state_path(),
+            life_loop_history_limit: default_life_loop_history_limit(),
         }
     }
 }
@@ -1743,6 +1752,14 @@ fn default_bind_address() -> String {
 
 fn default_true() -> bool {
     true
+}
+
+fn default_life_loop_state_path() -> String {
+    "data/rwif/life_loop_state.json".to_string()
+}
+
+fn default_life_loop_history_limit() -> usize {
+    256
 }
 
 fn default_rwif_schema_version() -> String {

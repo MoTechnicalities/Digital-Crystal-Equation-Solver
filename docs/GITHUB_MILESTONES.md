@@ -115,6 +115,23 @@ Spec refs:
 - `CSIF_V2_ENGINE_SPEC.md`
 - `CSIF_V2_RUST_ENGINE_TRAITS.md`
 
+### Issue 3.3: Ship Life Loop v0 with health and adaptation traces
+
+Summary:
+- add an auditable life-loop scheduler that promotes goal completion while avoiding repeated contradiction paths
+
+Acceptance criteria:
+- engine models include goals, episodes, adaptation counters, and health score outputs
+- deterministic tick endpoint can add/update goals, execute one cycle, and return identity plus health state
+- repeat-failure guard reroutes decisions to clarification mode after repeated contradictions
+- loop state persists to configured JSON and can reload on restart
+- tests verify adaptation behavior and health progression
+
+Spec refs:
+- `CSIF_V2_ENGINE_SPEC.md`
+- `CSIF_V2_CONFORMANCE_TEST_SPEC.md`
+- `CSIF_RWIF_V2_PROJECT_BLUEPRINT.md`
+
 ## Milestone 4: Containerized Service Boundary
 
 Target outcome:
@@ -161,6 +178,7 @@ Acceptance criteria:
 - repeated identical inputs produce identical encoded outputs
 - gate is runnable locally and in CI
 - failure output is diagnosable
+- Life Loop replay snapshot fixtures are versioned and exercised by tests
 
 Spec refs:
 - `CSIF_V2_CONFORMANCE_TEST_SPEC.md`

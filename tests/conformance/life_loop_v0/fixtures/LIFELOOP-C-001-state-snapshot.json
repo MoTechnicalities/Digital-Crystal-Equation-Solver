@@ -1,0 +1,58 @@
+{
+  "cycle_index": 2,
+  "goals": [
+    {
+      "goal_id": "goal-linear-a",
+      "description": "Stabilize linear solve behavior",
+      "priority": 90,
+      "confidence": 0.62,
+      "status": "active",
+      "success_count": 1,
+      "failure_count": 1,
+      "created_at_ms": 1000,
+      "updated_at_ms": 2000
+    }
+  ],
+  "episodes": [
+    {
+      "cycle_index": 0,
+      "goal_id": "goal-linear-a",
+      "action": {
+        "kind": "solve_linear",
+        "rationale": "observation carries linear coefficients; execute deterministic solver",
+        "signature": "goal-linear-a|LinearEquation|x|2|-4"
+      },
+      "outcome": "success",
+      "summary": "solved_linear_equation",
+      "stop_reason": "PathFound",
+      "solved_value": 2.0,
+      "timestamp_ms": 1000
+    },
+    {
+      "cycle_index": 1,
+      "goal_id": "goal-linear-a",
+      "action": {
+        "kind": "solve_linear",
+        "rationale": "observation carries linear coefficients; execute deterministic solver",
+        "signature": "goal-linear-a|LinearEquation|x|0|4"
+      },
+      "outcome": "failure",
+      "summary": "contradiction_detected",
+      "stop_reason": "ContradictionDetected",
+      "solved_value": null,
+      "timestamp_ms": 2000
+    }
+  ],
+  "action_failures": {
+    "goal-linear-a|LinearEquation|x|0|4": 1
+  },
+  "adaptation_events": 0,
+  "last_health": {
+    "knowledge_score": 0.675,
+    "auditability_score": 1.0,
+    "success_ratio": 0.5,
+    "contradiction_load": 0.5,
+    "active_goal_count": 1,
+    "adaptation_events": 0
+  }
+}
