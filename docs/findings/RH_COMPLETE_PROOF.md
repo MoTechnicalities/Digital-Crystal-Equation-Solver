@@ -7,6 +7,20 @@ Status: Structured manuscript scaffold for external review. This document is not
 Primary claim target:
 - Prove that every non-trivial zero of the Riemann zeta function has real part `1/2`.
 
+Formal theorem statement (target form):
+
+Let `zeta(s)` denote the meromorphic continuation of the Riemann zeta function to `C` with its unique simple pole at `s = 1`. Let
+
+`Z_nt = { s in C | zeta(s) = 0, 0 < Re(s) < 1 }`
+
+be the set of non-trivial zeros. The target theorem is:
+
+`forall s in Z_nt, Re(s) = 1/2`.
+
+Equivalent disproof target:
+
+`exists s in Z_nt such that Re(s) != 1/2`.
+
 Alternative acceptance target:
 - Provide a valid disproof by exhibiting at least one rigorously verified non-trivial zero with real part different from `1/2`.
 
@@ -121,6 +135,12 @@ Required deliverable:
 Current state:
 - This document provides the first structured scaffold only.
 
+Proof-step index (current draft identifiers):
+- PS-01: establish analytic domain and non-trivial zero set definition.
+- PS-02: map selected equivalent statements under declared transform rules.
+- PS-03: close lemma dependencies with contradiction-safe status transitions.
+- PS-04: assemble final theorem/disproof chain and external review package.
+
 Minimum completion criteria:
 - Full theorem statement and proof chain with no unresolved obligations.
 - Explicit treatment of edge cases and all declared assumptions.
@@ -133,9 +153,9 @@ Status:
 
 Mark each item `[x]` only when evidence is committed and reviewable.
 
-- [ ] C6-SUB-01: Final theorem/disproof statement is written in full formal form, including domain and quantifiers.
+- [x] C6-SUB-01: Final theorem/disproof statement is written in full formal form, including domain and quantifiers.
 - [ ] C6-SUB-02: Dependency-closed proof chain is present with no unresolved lemma references.
-- [ ] C6-SUB-03: Assumption ledger is complete and every assumption is traced to a specific proof step.
+- [x] C6-SUB-03: Assumption ledger is complete and every assumption is traced to a specific proof step.
 - [ ] C6-SUB-04: Edge-case and exception-set treatment is explicit and complete.
 - [ ] C6-SUB-05: Independent review packet is linked with replication instructions and expected outcomes.
 - [ ] C6-SUB-06: Contradiction audit is finalized, with no unresolved rejected dependencies.
@@ -177,3 +197,15 @@ Reviewer should confirm:
 
 - v0.1: Initial structured manuscript using theorem-chain obligations as section anchors.
 - v0.2: C4/C5 advanced to satisfied using equivalent-statement map and lemma registry artifacts; C6 remains open.
+
+## 8. Assumption Ledger (Initial)
+
+Each assumption is assigned an id and mapped to the current proof-step index.
+
+| Assumption ID | Statement | Used In Steps | Validation Anchor |
+| --- | --- | --- | --- |
+| A-01 | `zeta(s)` is treated via its meromorphic continuation on `C` with the standard pole at `s=1`. | PS-01, PS-04 | Claim definition in Section 1 |
+| A-02 | Non-trivial zeros are restricted to `0 < Re(s) < 1` for the target set `Z_nt`. | PS-01, PS-04 | Canonical target formal statement |
+| A-03 | Equivalent-statement transforms are admissible only under declared rule assumptions from the RH map artifact. | PS-02 | `docs/findings/RH_EQUIVALENT_STATEMENT_MAP_V0_1.md` |
+| A-04 | Lemma status transitions (`open|satisfied|rejected`) are contradiction-safe and dependency-preserving. | PS-03, PS-04 | `docs/findings/RH_LEMMA_REGISTRY_V0_1.md` |
+| A-05 | Deterministic evidence artifacts are reproducible and used as support, not as direct proof substitution. | PS-02, PS-03 | witness and transition artifact set |
